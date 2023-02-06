@@ -1,0 +1,26 @@
+{% extends 'consume/_layouts' %}
+
+{% import '_includes/forms' as forms %}
+{% import 'verbb-base/_macros' as macros %}
+
+{% requireAdmin %}
+
+{% set crumbs = [
+    { label: 'Consume' | t('consume'), url: url('consume') },
+    { label: 'Settings' | t('app'), url: url('consume/settings') },
+] %}
+
+{% set navItems = {
+    general: { label: 'General Settings' | t('consume'), url: url('consume/settings') },
+} %}
+
+{% set title = 'Settings' | t('consume') %}
+{% set docTitle = navItems[selectedNavItem].label ~ ' - ' ~ title %}
+
+{% block sidebar %}
+    {% include '_includes/nav' with {
+        label: title,
+        items: navItems,
+        selectedItem: selectedNavItem,
+    } only %}
+{% endblock %}

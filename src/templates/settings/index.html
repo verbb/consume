@@ -1,0 +1,50 @@
+{% extends 'consume/_layouts/settings' %}
+
+{% import '_includes/forms' as forms %}
+{% import 'verbb-base/_macros' as macros %}
+
+{% set fullPageForm = true %}
+{% set selectedNavItem = 'general' %}
+
+{% block blockContent %}
+
+<input type="hidden" name="action" value="plugins/save-plugin-settings">
+<input type="hidden" name="pluginHandle" value="consume">
+
+{% namespace 'settings' %}
+
+{{ forms.textField({
+    label: 'Plugin Name' | t('app'),
+    instructions: 'Plugin name for the end user.' | t('consume'),
+    id: 'pluginName',
+    name: 'pluginName',
+    value: settings.pluginName,
+    first: true,
+    autofocus: true,
+    warning: macros.configWarning('pluginName', 'consume'),
+}) }}
+
+{{ forms.lightswitchField({
+    label: 'Enable Cache' | t('consume'),
+    instructions: 'Whether to cache API requests.' | t('consume'),
+    id: 'enableCache',
+    name: 'enableCache',
+    on: settings.enableCache,
+    warning: macros.configWarning('enableCache', 'consume'),
+    toggle: '.cache-settings',
+}) }}
+
+<div class="cache-settings {{ not settings.enableCache ? 'hidden' }}">
+    {{ forms.textField({
+        label: 'Cache Duration' | t('consume'),
+        instructions: 'Set the cache duration. Accepts a [Date Interval](https://www.php.net/manual/en/dateinterval.construct.php) or a number of seconds.' | t('consume'),
+        id: 'cacheDuration',
+        name: 'cacheDuration',
+        value: settings.cacheDuration,
+        warning: macros.configWarning('cacheDuration', 'consume'),
+    }) }}
+</div>
+
+{% endnamespace %}
+
+{% endblock %}

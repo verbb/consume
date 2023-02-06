@@ -1,0 +1,204 @@
+{% extends 'consume/_layouts' %}
+
+{% import '_includes/forms' as forms %}
+{% import 'verbb-base/_macros' as macros %}
+
+{% set crumbs = [
+    { label: craft.consume.getPluginName() | t('consume'), url: url('consume') },
+    { label: 'Clients' | t('consume'), url: url('consume/clients') }
+] %}
+
+{% set fullPageForm = true %}
+{% set selectedSubnavItem = 'clients' %}
+
+{% set saveShortcutRedirect = 'consume/clients/oauth/{handle}' %}
+
+{% block actionButton %}
+
+<div class="btngroup">
+    <input type="submit" class="btn submit" value="{{ 'Save' | t('app') }}">
+
+    <div class="btn submit menubtn"></div>
+    <div class="menu">
+        <ul>
+            <li>
+                <a class="formsubmit" data-redirect="{{ saveShortcutRedirect | hash }}">
+                    {{ forms.optionShortcutLabel('S') }}
+                    {{ 'Save and continue editing' | t('app') }}
+                </a>
+            </li>
+        </ul>
+
+        <hr>
+        <ul>
+            <li><a class="formsubmit error" data-action="consume/clients/delete" data-confirm="{{ 'Are you sure you want to delete this client?' | t('consume') }}" data-redirect="{{ 'consume/clients#' | hash }}">{{ 'Delete' | t('app') }}</a></li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}
+
+{% set tabs = {
+    client: { label: 'Client' | t('consume'), url: '#client' },
+    provider: { label: 'Provider' | t('consume'), url: '#provider' },
+} %}
+
+{% block content %}
+
+{# Show an error when connecting to OAuth, instead of just in logs #}
+{% set message = craft.app.session.getFlash('consume:callback-error') %}
+
+{% if message %}
+    <div class="consume-pane consume-pane-error code error" style="margin-bottom: 24px;">{{ message }}</div>
+{% endif %}
+
+<input type="hidden" name="action" value="consume/clients/save">
+{% if client.id %}<input type="hidden" name="clientId" value="{{ client.id }}">{% endif %}
+{{ redirectInput('consume/clients') }}
+
+<div id="client">
+    {{ forms.textField({
+        first: true,
+        label: 'Name' | t('app'),
+        instructions: 'What this client will be called in the control panel.' | t('consume'),
+        id: 'name',
+        name: 'name',
+        value: (client is defined ? client.name : null),
+        errors: (client is defined ? client.getErrors('name') : null),
+        autofocus: true,
+        required: true,
+    }) }}
+
+    {{ forms.textField({
+        label: 'Handle' | t('app'),
+        instructions: 'How you’ll refer to this client in your templates.' | t('consume'),
+        id: 'handle',
+        name: 'handle',
+        class: 'code',
+        value: (client is defined ? client.handle : null),
+        errors: (client is defined ? client.getErrors('handle') : null),
+        required: true,
+    }) }}
+</div>
+
+<div id="provider" class="hidden">
+    {% for clientType in clientTypes %}
+        {% set isCurrent = (clientType == className(client)) %}
+
+        <div class="client-settings-{{ clientType | id }} {% if not isCurrent %}hidden{% endif %}">
+            {% namespace 'types[' ~ clientType ~ ']' %}
+                {% if isCurrent %}
+                    {{ client.getSettingsHtml() | raw }}
+                {% else %}
+                    {{ clientInstances[clientType].getSettingsHtml() | raw }}
+                {% endif %}
+            {% endnamespace %}
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+{% block details %}
+
+<div class="meta">
+    {% if clientOptions | length %}
+        {{ forms.selectField({
+            label: 'Provider' | t('consume'),
+            name: 'type',
+            options: clientOptions,
+            value: className(client),
+            toggle: true,
+            targetPrefix: '.client-settings-',
+            required: true,
+        }) }}
+    {% endif %}
+
+    {{ forms.lightswitchField({
+        label: 'Enabled' | t('consume'),
+        name: 'enabled',
+        on: client.enabled,
+    }) }}
+
+    <div class="field lightswitch-field">
+        {% if client.isConfigured %}
+            <div class="heading">
+                <span class="status on"></span>{{ 'Provider Configured' | t('consume') }}
+            </div>
+        {% else %}
+            <div class="heading">
+                <span class="status"></span><span class="light">{{ 'Provider not configured' | t('consume') }}</span>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if client.isConnected %}
+        <div class="field lightswitch-field consume-connect">
+            <div class="heading">
+                <span class="status on"></span>{{ 'Connected' | t('consume') }}
+            </div>
+
+            <div class="input ltr">
+                <a class="btn small formsubmit" data-action="consume/auth/disconnect" data-param="client" data-value="{{ client.handle }}" data-redirect="{{ saveShortcutRedirect | hash }}">{{ 'Disconnect' | t('consume') }}</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="field lightswitch-field consume-connect">
+            <div class="heading">
+                <span class="status"></span><span class="light">{{ 'Not Connected' | t('consume') }}</span>
+            </div>
+
+            <div class="input ltr">
+                <a class="btn small formsubmit" data-action="consume/auth/connect" data-param="client" data-value="{{ client.handle }}" data-redirect="{{ 'consume/clients/' ~ client.handle | hash }}">{{ 'Connect' | t('consume') }}</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<hr>
+
+{% if client.id %}
+    <div class="meta read-only">
+        {% if client.id %}
+            <div class="data">
+                <h5 class="heading">{{ 'ID' | t('consume') }}</h5>
+                <div class="value">{{ client.id }}</div>
+            </div>
+        {% endif %}
+
+        <div class="data">
+            <h5 class="heading">{{ 'Date Created' | t('consume') }}</h5>
+            <div class="value">{{ client.dateCreated | date('short') }} {{ client.dateCreated | time('short') }}</div>
+        </div>
+
+        <div class="data">
+            <h5 class="heading">{{ 'Date Updated' | t('consume') }}</h5>
+            <div class="value">{{ client.dateUpdated | date('short') }} {{ client.dateUpdated | time('short') }}</div>
+        </div>
+    </div>
+{% endif %}
+
+{% endblock %}
+
+{% js %}
+
+// Add event listeners to all form inputs, to detect a change. Show a message to save when changed.
+$(document).ready(function() {
+    var html = '<div class="heading"><span class="warning with-icon">{{ 'Save this client to connect.' | t('consume') }}</span></div>';
+    
+    $('#main-form').find('input, select, textarea').on('input', function() {
+        $('.consume-connect').html(html);
+    });
+
+    $('#main-form').find('.lightswitch').on('change', function() {
+        $('.consume-connect').html(html);
+    });
+});
+
+{% if client is not defined or not client.handle %}
+    new Craft.HandleGenerator("#{{ 'name' | namespaceInputId }}", "#{{ 'handle' | namespaceInputId }}");
+
+    $('#main-form input').trigger('input');
+{% endif %}
+
+{% endjs %}

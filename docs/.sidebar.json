@@ -1,0 +1,43 @@
+[
+    {
+        "title": "Get Started",
+        "collapsable": false,
+        "children": [
+            "get-started/installation-setup",
+            "get-started/requirements",
+            "get-started/configuration"
+        ]
+    },
+    {
+        "title": "Feature Tour",
+        "collapsable": false,
+        "children": [
+            "feature-tour/clients",
+            "feature-tour/cache"
+        ]
+    },
+    {
+        "title": "Providers",
+        "collapsable": false,
+        "children": [
+            "providers/all-providers"
+        ]
+    },
+    {
+        "title": "Template Guides",
+        "collapsable": false,
+        "children": [
+            "template-guides/available-variables",
+            "template-guides/fetching-data"
+        ]
+    },
+    {
+        "title": "Developers",
+        "collapsable": false,
+        "children": [
+            "developers/client",
+            "developers/client-type",
+            "developers/events"
+        ]
+    }
+]

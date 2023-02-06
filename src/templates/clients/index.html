@@ -1,0 +1,103 @@
+{% extends 'consume/_layouts' %}
+
+{% do view.registerAssetBundle('craft\\web\\assets\\admintable\\AdminTableAsset') -%}
+
+{% set crumbs = [
+    { label: craft.consume.getPluginName() | t('consume'), url: url('consume') },
+    { label: 'Clients' | t('consume'), url: url('consume/clients') }
+] %}
+
+{% set title = 'Clients' | t('consume') %}
+{% set selectedSubnavItem = 'clients' %}
+
+{% block actionButton %}
+
+<div class="btngroup submit">
+    <button type="button" class="btn submit add icon menubtn">
+        <div class="label">{{ 'New client' | t('consume') }}</div>
+    </button>
+
+    <div class="menu">
+        <ul>
+            <li>
+                <a href="{{ url('consume/clients/credentials/new') }}">{{ 'Credentials' | t('consume') }}</a>
+            </li>
+
+            <li>
+                <a href="{{ url('consume/clients/oauth/new') }}">{{ 'OAuth' | t('consume') }}</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block blockContent %}
+
+<div id="clients-vue-admin-table"></div>
+
+{% endblock %}
+
+{% set tableData = [] %}
+
+{% for client in clients %}
+    {% set tableData = tableData | merge([{
+        id: client.id,
+        title: client.name | t('site'),
+        url: client.getCpEditUrl(),
+        handle: client.handle,
+        enabled: client.enabled,
+        connected: client.supportsConnection() ? client.connected : '__none__',
+        type: client.typeLabel,
+        provider: { name: client.providerName | t('site') | e, icon: client.icon, color: client.primaryColor },
+    }]) %}
+{% endfor %}
+
+{% js %}
+    var columns = [
+        { name: '__slot:title', title: Craft.t('app', 'Name') },
+        { name: '__slot:handle', title: Craft.t('app', 'Handle') },
+        { name: 'enabled', title: Craft.t('app', 'Status'), callback: function(value) {
+            if (value) {
+                return '<span class="status on"></span>' + Craft.t('consume', 'Enabled');
+            } else {
+                return '<span class="status"></span>' + Craft.t('consume', 'Disabled');
+            }
+        } },
+        { name: 'connected', title: Craft.t('app', 'Connected'), callback: function(value) {
+            if (value == '__none__') {
+                return '-';
+            } else if (value) {
+                return '<span class="status on"></span>' + Craft.t('consume', 'Connected');
+            } else {
+                return '<span class="status"></span>' + Craft.t('consume', 'Disconnected');
+            }
+        } },
+        { name: 'type', title: Craft.t('consume', 'Type') },
+        { name: 'provider', title: Craft.t('app', 'Provider'), callback: function(provider) {
+            let $icon = '';
+
+            if (!provider) {
+                return '';
+            }
+
+            if (provider.icon) {
+                $icon = '<span class="consume-provider-icon">' + provider.icon + '</span>';
+            }
+
+            return '<div class="consume-provider" style="--bg-color: ' + provider.color + '">' +
+                $icon +
+                '<span class="consume-provider-label">' + provider.name + '</span>' +
+            '</div>';
+        } },
+    ];
+
+    new Craft.VueAdminTable({
+        columns: columns,
+        container: '#clients-vue-admin-table',
+        reorderAction: 'consume/clients/reorder',
+        deleteAction: 'consume/clients/delete',
+        emptyMessage: Craft.t('consume', 'No clients exist yet.'),
+        tableData: {{ tableData | json_encode | raw }},
+    });
+{% endjs %}

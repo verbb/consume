@@ -1,0 +1,15 @@
+{% import '_includes/forms' as forms %}
+{% import 'verbb-base/_macros' as macros %}
+
+{% include 'consume/clients/oauth/_oauth' %}
+
+{{ forms.autosuggestField({
+    label: 'Store Name' | t('consume'),
+    instructions: 'Enter your {provider} Store Name here.' | t('consume', { provider: client.providerName }),
+    name: 'storeName',
+    required: true,
+    suggestEnvVars: true,
+    value: client.storeName ?? '',
+    warning: macros.configWarning("clients.#{client.handle}.storeName", 'consume'),
+    errors: client.getErrors('storeName'),
+}) }}

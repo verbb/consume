@@ -1,0 +1,37 @@
+{% import '_includes/forms' as forms %}
+{% import 'verbb-base/_macros' as macros %}
+
+{% include 'consume/clients/oauth/_oauth' %}
+
+{{ forms.autosuggestField({
+    label: 'Username' | t('consume'),
+    instructions: 'Enter your {provider} Username here.' | t('consume', { provider: client.providerName }),
+    name: 'username',
+    required: true,
+    suggestEnvVars: true,
+    value: client.username ?? '',
+    warning: macros.configWarning("clients.#{client.handle}.username", 'consume'),
+    errors: client.getErrors('username'),
+}) }}
+
+{{ forms.autosuggestField({
+    label: 'Password' | t('consume'),
+    instructions: 'Enter your {provider} Password here.' | t('consume', { provider: client.providerName }),
+    name: 'password',
+    required: true,
+    suggestEnvVars: true,
+    value: client.password ?? '',
+    warning: macros.configWarning("clients.#{client.handle}.password", 'consume'),
+    errors: client.getErrors('password'),
+}) }}
+
+{{ forms.autosuggestField({
+    label: 'Company Name' | t('consume'),
+    instructions: 'Enter your {provider} Company Name here.' | t('consume', { provider: client.providerName }),
+    name: 'companyName',
+    required: true,
+    suggestEnvVars: true,
+    value: client.companyName ?? '',
+    warning: macros.configWarning("clients.#{client.handle}.companyName", 'consume'),
+    errors: client.getErrors('companyName'),
+}) }}

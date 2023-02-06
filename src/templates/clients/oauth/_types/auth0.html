@@ -1,0 +1,37 @@
+{% import '_includes/forms' as forms %}
+{% import 'verbb-base/_macros' as macros %}
+
+{% include 'consume/clients/oauth/_oauth' %}
+
+{{ forms.autosuggestField({
+    label: 'Region' | t('consume'),
+    instructions: 'Enter your {provider} Region here.' | t('consume', { provider: client.providerName }),
+    name: 'region',
+    required: true,
+    suggestEnvVars: true,
+    suggestions: [
+        {
+            label: 'Regions',
+            data: [
+                { name: 'us', hint: 'US' },
+                { name: 'eu', hint: 'EU' },
+                { name: 'au', hint: 'AU' },
+                { name: 'jp', hint: 'JP' },
+            ],
+        },
+    ],
+    value: client.region ?? '',
+    warning: macros.configWarning("clients.#{client.handle}.region", 'consume'),
+    errors: client.getErrors('region'),
+}) }}
+
+{{ forms.autosuggestField({
+    label: 'Account' | t('consume'),
+    instructions: 'Enter your {provider} Account here.' | t('consume', { provider: client.providerName }),
+    name: 'account',
+    required: true,
+    suggestEnvVars: true,
+    value: client.account ?? '',
+    warning: macros.configWarning("clients.#{client.handle}.account", 'consume'),
+    errors: client.getErrors('account'),
+}) }}

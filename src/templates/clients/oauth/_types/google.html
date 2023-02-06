@@ -1,0 +1,14 @@
+{% import '_includes/forms' as forms %}
+{% import 'verbb-base/_macros' as macros %}
+
+{% include 'consume/clients/oauth/_oauth' %}
+
+{{ forms.booleanMenuField({
+    label: 'Proxy Redirect URI' | t('consume'),
+    instructions: 'Whether to proxy the redirect URI through Verbb‘s servers. This should **only** be used for local testing. See [docs](https://verbb.io/craft-plugins/consume/docs/feature-tour/clients#local-testing-proxy) for more.' | t('consume') | md,
+    name: 'proxyRedirect',
+    includeEnvVars: true,
+    value: client.proxyRedirect ?? false,
+    warning: macros.configWarning('proxyRedirect', 'consume'),
+    errors: client.getErrors('proxyRedirect'),
+}) }}

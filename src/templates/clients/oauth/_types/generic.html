@@ -1,0 +1,39 @@
+{% import '_includes/forms' as forms %}
+{% import 'verbb-base/_macros' as macros %}
+
+{% include 'consume/clients/oauth/_oauth' %}
+
+<hr>
+
+{{ forms.autosuggestField({
+    label: 'Authorization URL' | t('consume'),
+    instructions: 'Enter the Authorization URL for this provider.' | t('consume'),
+    name: 'authorizationUrl',
+    required: true,
+    suggestEnvVars: true,
+    value: client.authorizationUrl ?? '',
+    warning: macros.configWarning("clients.#{client.handle}.authorizationUrl", 'consume'),
+    errors: client.getErrors('authorizationUrl'),
+}) }}
+
+{{ forms.autosuggestField({
+    label: 'Token URL' | t('consume'),
+    instructions: 'Enter the Token URL for this provider.' | t('consume'),
+    name: 'tokenUrl',
+    required: true,
+    suggestEnvVars: true,
+    value: client.tokenUrl ?? '',
+    warning: macros.configWarning("clients.#{client.handle}.tokenUrl", 'consume'),
+    errors: client.getErrors('tokenUrl'),
+}) }}
+
+{{ forms.autosuggestField({
+    label: 'API URL' | t('consume'),
+    instructions: 'Enter the API URL for this provider.' | t('consume'),
+    name: 'url',
+    suggestEnvVars: true,
+    required: true,
+    value: client.url ?? '',
+    warning: macros.configWarning("clients.#{client.handle}.url", 'consume'),
+    errors: client.getErrors('url'),
+}) }}
