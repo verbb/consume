@@ -2,7 +2,7 @@
 You can create either a **Credentials** or **OAuth** client in Consume, via the control panel UI. This allows you to be able to set settings once, and use the client multiple times in your front-end Twig templates.
 
 :::tip
-You don't have to use clients if you just want to roll your own [Guzzle](https://docs.guzzlephp.org/en/stable/) client. Have a look at the [Requests](docs:template/guides/requests) docs. 
+You don't have to use clients if you just want to roll your own [Guzzle](https://docs.guzzlephp.org/en/stable/) client. Have a look at the [Requests](docs:template-guides/fetching-data) docs. 
 
 **However** you can't use OAuth-based clients in your templates. You'll need to create your own [Client](docs:developers/client-type).
 :::
