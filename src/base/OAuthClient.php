@@ -85,7 +85,10 @@ abstract class OAuthClient extends Client implements OAuthProviderInterface
 
     public function getRedirectUri(): ?string
     {
-        return UrlHelper::siteUrl('consume/auth/callback');
+        $siteId = Craft::$app->getSites()->getPrimarySite()->id;
+
+        // We should always use the primary site for the redirect
+        return UrlHelper::siteUrl('consume/auth/callback', null, null, $siteId);
     }
 
     public function getAuthorizationUrlOptions(): array
