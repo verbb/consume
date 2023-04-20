@@ -21,6 +21,7 @@ use craft\helpers\Json;
 
 use yii\base\Component;
 use yii\base\InvalidConfigException;
+use yii\caching\TagDependency;
 
 use Exception;
 use Throwable;
@@ -288,6 +289,8 @@ class Clients extends Component
         }
 
         $client->afterSave($isNewClient);
+
+        TagDependency::invalidate(Craft::$app->getCache(), ['consume:' . $client->handle]);
 
         // Fire an 'afterSaveClient' event
         if ($this->hasEventHandlers(self::EVENT_AFTER_SAVE_CLIENT)) {

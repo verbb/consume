@@ -16,6 +16,8 @@ use DateTime;
 use DateTimeZone;
 use Throwable;
 
+use yii\caching\TagDependency;
+
 use verbb\auth\helpers\UrlHelper as AuthUrlHelper;
 
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
@@ -37,6 +39,11 @@ class Service extends Component
         // Only cache if we've requested it, and probably just for GET requests. Seems odd to cache POST/DELETE/PUT.
         if ($enableCache && $method === 'GET') {
             $seconds = ConfigHelper::durationInSeconds($cacheDuration);
+            $cacheTags = ['consume'];
+
+            if (is_string($clientOpts)) {
+                $cacheTags[] = 'consume:' . $clientOpts;
+            }
 
             // Generate a cache key based on all the provided data and duration (in case we change it)
             $cacheKey = md5(Json::encode([$clientOpts, $method, $uri, $options, $seconds]));
@@ -49,7 +56,11 @@ class Service extends Component
 
                 // Returning `false` ensures that the result is not cached, and evaluated next time
                 return false;
-            }, $seconds);
+            }, $seconds, new TagDependency([
+                // Allow us to tag the cache with the provider handle (and Consume in general) to make invalidating it easier when saving
+                // CP-based clients in the control panel when their settings change.
+                'tags' => $cacheTags,
+            ]));
 
             // Only return if we have a result
             if ($cacheData) {
