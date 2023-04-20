@@ -34,7 +34,8 @@ class Service extends Component
         $enableCache = ArrayHelper::remove($clientOpts, 'enableCache', $settings->enableCache);
         $cacheDuration = ArrayHelper::remove($clientOpts, 'cacheDuration', $settings->cacheDuration);
 
-        if ($enableCache) {
+        // Only cache if we've requested it, and probably just for GET requests. Seems odd to cache POST/DELETE/PUT.
+        if ($enableCache && $method === 'GET') {
             $seconds = ConfigHelper::durationInSeconds($cacheDuration);
 
             // Generate a cache key based on all the provided data and duration (in case we change it)
