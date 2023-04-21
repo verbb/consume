@@ -3,6 +3,8 @@ namespace verbb\consume\clients\credentials;
 
 use verbb\consume\base\CredentialsClient;
 
+use craft\helpers\App;
+
 use verbb\auth\helpers\UrlHelper as AuthUrlHelper;
 
 class Generic extends CredentialsClient
@@ -40,24 +42,31 @@ class Generic extends CredentialsClient
 
     public function getCredentialsProviderOptions(array $options = []): array
     {
-        $query = $options['query'] ?? [];
-        $options['query'] = array_merge($query, $this->queryParams);
+        foreach ($this->queryParams as $key => $value) {
+            $options['query'][App::parseEnv($key)] = App::parseEnv($value);
+        }
 
         return $options;
     }
 
     public function getCredentialsProviderConfig(): array
     {
+        $url = App::parseEnv($this->url);
+
         $config = array_filter([
-            'base_uri' => AuthUrlHelper::normalizeBaseUri($this->url),
+            'base_uri' => AuthUrlHelper::normalizeBaseUri($url),
         ]);
 
         if ($this->headers) {
-            $config['headers'] = $this->headers;
+            foreach ($this->headers as $key => $value) {
+                $config['headers'][App::parseEnv($key)] = App::parseEnv($value);
+            }
         }
 
         if ($auth = array_filter(array_values($this->httpAuth))) {
-            $config['auth'] = $auth;
+            foreach ($auth as $value) {
+                $config['auth'][] = App::parseEnv($value);
+            }
         }
 
         // Merge in any additional config options set at the template level
