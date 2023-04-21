@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.2 - 2023-04-21
+
+### Fixed
+- Fix CP-based generic clients not accepting .env variables for some settings.
+
 ## 1.0.1 - 2023-04-21
 
 ### Changed
