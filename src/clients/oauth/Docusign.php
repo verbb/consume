@@ -37,7 +37,7 @@ class Docusign extends OAuthClient
     public function getOAuthProviderConfig(): array
     {
         $config = parent::getOAuthProviderConfig();
-        $config['storeName'] = $this->getStoreName();
+        $config['useSandbox'] = $this->getUseSandbox();
 
         return $config;
     }
