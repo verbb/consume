@@ -37,7 +37,7 @@ class PayPal extends OAuthClient
     public function getOAuthProviderConfig(): array
     {
         $config = parent::getOAuthProviderConfig();
-        $config['useSandbox'] = $this->getUseSandbox();
+        $config['isSandbox'] = $this->getUseSandbox();
 
         return $config;
     }
