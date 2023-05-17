@@ -1,1 +1,14 @@
+{% import '_includes/forms' as forms %}
+{% import 'verbb-base/_macros' as macros %}
+
 {% include 'consume/clients/oauth/_oauth' %}
+
+{{ forms.booleanMenuField({
+    label: 'Use Sandbox' | t('consume'),
+    instructions: 'Whether to use the {provider} sandbox.' | t('consume', { provider: client.providerName }),
+    name: 'useSandbox',
+    includeEnvVars: true,
+    value: client.useSandbox ?? false,
+    warning: macros.configWarning('useSandbox', 'consume'),
+    errors: client.getErrors('useSandbox'),
+}) }}
