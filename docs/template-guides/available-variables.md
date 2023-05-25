@@ -1,5 +1,5 @@
 # Available Variables
-The following are common methods you will want to call in your front end templates:
+The following methods are available to call in your Twig templates:
 
 ### `craft.consume.getAllClients()`
 Returns a collection of [Client](docs:developers/client) objects.

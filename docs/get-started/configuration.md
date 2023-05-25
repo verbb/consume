@@ -21,7 +21,7 @@ return [
 - `cacheDuration` - When the cache is enabled, how long data is cached for. Accepts a [Date Interval](https://www.php.net/manual/en/dateinterval.construct.php) or a number of seconds.
 
 ### Clients
-Supply your client configurations as per the below. The `key` for each item should be the client `handle`.
+Supply your client configurations as per the below. The `key` for each item should be the client `handle`. Do note that this only allows overriding existing clients and their settings, and you can't define clients purely in the configuration file.
 
 ```php
 return [

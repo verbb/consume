@@ -1,4 +1,4 @@
-# Consume Plugin for Craft CMS
+# Consume plugin for Craft CMS
 <img width="500" src="https://verbb.imgix.net/plugins/consume/consume-social-card.png?v=2">
 
 Consume is a Craft CMS plugin for making HTTP requests in your Twig templates. Integrates with the [Auth](https://github.com/verbb/auth) module to make it possible to use OAuth clients without having to worry about refresh tokens, token management, etc.
@@ -109,5 +109,5 @@ Get in touch with us via the [Consume Support page](https://verbb.io/craft-plugi
 <h2></h2>
 
 <a href="https://verbb.io" target="_blank">
-  <img width="100" src="https://verbb.io/assets/img/verbb-pill.svg">
+    <img width="100" src="https://verbb.io/assets/img/verbb-pill.svg">
 </a>
