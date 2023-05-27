@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.3 - 2023-05-27
+
+### Added
+- Add “Use Sandbox” setting for DocuSign and PayPal.
+
 ## 1.0.2 - 2023-04-21
 
 ### Fixed
