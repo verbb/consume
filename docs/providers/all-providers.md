@@ -418,7 +418,7 @@ Follow the below steps to connect to the Eventbrite API.
 1. In the **OAuth Redirect URI** field, enter the value from the **Redirect URI** field in Consume.
 1. Once created, click the **Show API key, client secret and tokens** button.
 1. Copy the **API Key** from Eventbrite and paste in the **Client ID** field in Consume.
-1. Copy the **Private Token** from Eventbrite and paste in the **Client Secret** field in Consume.
+1. Copy the **Client Secret** from Eventbrite and paste in the **Client Secret** field in Consume.
 
 
 ## Facebook
