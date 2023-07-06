@@ -93,10 +93,12 @@ abstract class OAuthClient extends Client implements OAuthProviderInterface
 
     public function getAuthorizationUrlOptions(): array
     {
+        // Create custom scopes with the provided scope separator, and still pass in as an array so that
+        // they're merged with the default provider scopes as well.
         $scopes = implode($this->scopeSeparator, $this->scopes);
 
         return [
-            'scope' => $scopes,
+            'scope' => [$scopes],
         ];
     }
 
