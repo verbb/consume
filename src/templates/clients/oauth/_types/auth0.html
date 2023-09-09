@@ -35,3 +35,13 @@
     warning: macros.configWarning("clients.#{client.handle}.account", 'consume'),
     errors: client.getErrors('account'),
 }) }}
+
+{{ forms.autosuggestField({
+    label: 'Custom Domain' | t('consume'),
+    instructions: 'Enter your {provider} Custom Domain if using here.' | t('consume', { provider: provider.name }),
+    name: 'customDomain',
+    suggestEnvVars: true,
+    value: client.customDomain ?? '',
+    warning: macros.configWarning("clients.#{client.handle}.customDomain", 'consume'),
+    errors: client.getErrors('customDomain'),
+}) }}
