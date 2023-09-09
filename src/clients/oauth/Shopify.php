@@ -3,6 +3,8 @@ namespace verbb\consume\clients\oauth;
 
 use verbb\consume\base\OAuthClient;
 
+use craft\helpers\App;
+
 use verbb\auth\Auth;
 use verbb\auth\providers\Shopify as ShopifyProvider;
 
@@ -21,5 +23,31 @@ class Shopify extends OAuthClient
     // =========================================================================
 
     public static string $providerHandle = 'shopify';
+    public ?string $subdomain = null;
+
+
+    // Public Methods
+    // =========================================================================
+
+    public function getSubdomain(): ?string
+    {
+        return App::parseEnv($this->subdomain);
+    }
+
+    public function defineRules(): array
+    {
+        $rules = parent::defineRules();
+        $rules[] = [['subdomain'], 'required'];
+
+        return $rules;
+    }
+
+    public function getOAuthProviderConfig(): array
+    {
+        $config = parent::getOAuthProviderConfig();
+        $config['shop'] = $this->getSubdomain();
+
+        return $config;
+    }
 
 }
