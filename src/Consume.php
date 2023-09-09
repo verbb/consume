@@ -64,6 +64,14 @@ class Consume extends Plugin
         return Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('consume/settings'));
     }
 
+    public function getCpNavItem(): ?array
+    {
+        $navItem = parent::getCpNavItem();
+        $navItem['label'] = $this->getPluginName();
+
+        return $navItem;
+    }
+
 
     // Protected Methods
     // =========================================================================
