@@ -38,7 +38,7 @@
 
 {{ forms.autosuggestField({
     label: 'Custom Domain' | t('consume'),
-    instructions: 'Enter your {provider} Custom Domain if using here.' | t('consume', { provider: provider.name }),
+    instructions: 'Enter your {provider} Custom Domain if using here.' | t('consume', { provider: client.providerName }),
     name: 'customDomain',
     suggestEnvVars: true,
     value: client.customDomain ?? '',
