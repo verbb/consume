@@ -34,7 +34,7 @@
     },
     "autoload": {
         "psr-4": {
-          "verbb\\consume\\": "src/"
+            "verbb\\consume\\": "src/"
         }
     },
     "extra": {
