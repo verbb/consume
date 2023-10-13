@@ -68,29 +68,6 @@ abstract class Client extends SavableComponent implements ClientInterface
     // Public Methods
     // =========================================================================
 
-    public function defineRules(): array
-    {
-        $rules = parent::defineRules();
-
-        $rules[] = [['name', 'handle'], 'required'];
-        $rules[] = [['id'], 'number', 'integerOnly' => true];
-
-        $rules[] = [
-            ['handle'],
-            HandleValidator::class,
-            'reservedWords' => [
-                'dateCreated',
-                'dateUpdated',
-                'edit',
-                'id',
-                'title',
-                'uid',
-            ],
-        ];
-
-        return $rules;
-    }
-
     public function getType(): string
     {
         return static::$type;
@@ -116,7 +93,7 @@ abstract class Client extends SavableComponent implements ClientInterface
         return ProviderHelper::getIcon(static::$providerHandle);
     }
 
-    public function getCpEditUrl(): string
+    public function getCpEditUrl(): ?string
     {
         return UrlHelper::cpUrl('consume/clients/' . $this->getType() . '/' . $this->handle);
     }
@@ -160,6 +137,29 @@ abstract class Client extends SavableComponent implements ClientInterface
 
     // Protected Methods
     // =========================================================================
+
+    protected function defineRules(): array
+    {
+        $rules = parent::defineRules();
+
+        $rules[] = [['name', 'handle'], 'required'];
+        $rules[] = [['id'], 'number', 'integerOnly' => true];
+
+        $rules[] = [
+            ['handle'],
+            HandleValidator::class,
+            'reservedWords' => [
+                'dateCreated',
+                'dateUpdated',
+                'edit',
+                'id',
+                'title',
+                'uid',
+            ],
+        ];
+
+        return $rules;
+    }
 
     protected function setSettingCache(array $values): void
     {

@@ -51,19 +51,6 @@ abstract class OAuthClient extends Client implements OAuthProviderInterface
         return $attributes;
     }
 
-    public function defineRules(): array
-    {
-        $rules = parent::defineRules();
-
-        $rules[] = [
-            ['clientId', 'clientSecret'], 'required', 'when' => function($model) {
-                return $model->enabled;
-            },
-        ];
-
-        return $rules;
-    }
-
     public function getSettingsHtml(): ?string
     {
         $handle = StringHelper::toKebabCase(static::$providerHandle);
@@ -119,5 +106,22 @@ abstract class OAuthClient extends Client implements OAuthProviderInterface
         }
 
         return parent::beforeSave($isNew);
+    }
+
+
+    // Protected Methods
+    // =========================================================================
+
+    protected function defineRules(): array
+    {
+        $rules = parent::defineRules();
+
+        $rules[] = [
+            ['clientId', 'clientSecret'], 'required', 'when' => function($model) {
+                return $model->enabled;
+            },
+        ];
+
+        return $rules;
     }
 }

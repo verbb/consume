@@ -40,8 +40,6 @@ class Consume extends Plugin
 
         self::$plugin = $this;
 
-        $this->_setPluginComponents();
-        $this->_setLogging();
         $this->_registerTwigExtensions();
         $this->_registerVariables();
 
@@ -66,10 +64,17 @@ class Consume extends Plugin
 
     public function getCpNavItem(): ?array
     {
-        $navItem = parent::getCpNavItem();
-        $navItem['label'] = $this->getPluginName();
+        $nav = parent::getCpNavItem();
+        $nav['label'] = $this->getPluginName();
 
-        return $navItem;
+        if (Craft::$app->getUser()->getIsAdmin() && Craft::$app->getConfig()->getGeneral()->allowAdminChanges) {
+            $nav['subnav']['settings'] = [
+                'label' => Craft::t('consume', 'Settings'),
+                'url' => 'consume/settings',
+            ];
+        }
+
+        return $nav;
     }
 
 

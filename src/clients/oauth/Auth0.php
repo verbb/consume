@@ -46,14 +46,6 @@ class Auth0 extends OAuthClient
         return App::parseEnv($this->customDomain);
     }
 
-    public function defineRules(): array
-    {
-        $rules = parent::defineRules();
-        $rules[] = [['region', 'account'], 'required'];
-
-        return $rules;
-    }
-
     public function getOAuthProviderConfig(): array
     {
         $config = parent::getOAuthProviderConfig();
@@ -62,6 +54,18 @@ class Auth0 extends OAuthClient
         $config['customDomain'] = $this->getCustomDomain();
 
         return $config;
+    }
+
+
+    // Protected Methods
+    // =========================================================================
+
+    protected function defineRules(): array
+    {
+        $rules = parent::defineRules();
+        $rules[] = [['region', 'account'], 'required'];
+
+        return $rules;
     }
 
 }

@@ -2,7 +2,7 @@
     "name": "verbb/consume",
     "description": "Create HTTP requests in your Twig templates to consume JSON, XML or CSV content.",
     "type": "craft-plugin",
-    "version": "1.0.3",
+    "version": "2.0.0-beta.1",
     "keywords": [
         "craft",
         "cms",
@@ -25,22 +25,22 @@
         }
     ],
     "require": {
-        "php": "^8.0.2",
-        "craftcms/cms": "^4.0.0",
+        "php": "^8.2",
+        "craftcms/cms": "^5.0.0-alpha.1",
         "symfony/property-access": "^6.0",
         "symfony/serializer": "^6.0",
-        "verbb/auth": "^1.0.0",
-        "verbb/base": "^2.0.0"
+        "verbb/auth": "^2.0.0-beta.1",
+        "verbb/base": "^3.0.0-beta.1"
     },
     "autoload": {
         "psr-4": {
-          "verbb\\consume\\": "src/"
+            "verbb\\consume\\": "src/"
         }
     },
     "extra": {
         "name": "Consume",
         "handle": "consume",
-        "changelogUrl": "https://raw.githubusercontent.com/verbb/consume/craft-4/CHANGELOG.md",
+        "changelogUrl": "https://raw.githubusercontent.com/verbb/consume/craft-5/CHANGELOG.md",
         "class": "verbb\\consume\\Consume"
     }
 }

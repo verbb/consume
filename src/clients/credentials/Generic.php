@@ -22,19 +22,6 @@ class Generic extends CredentialsClient
     // Public Methods
     // =========================================================================
 
-    public function defineRules(): array
-    {
-        $rules = parent::defineRules();
-
-        $rules[] = [
-            ['url'], 'required', 'when' => function($model) {
-                return $model->enabled;
-            },
-        ];
-
-        return $rules;
-    }
-
     public function isConfigured(): bool
     {
         return (bool)$this->url;
@@ -104,6 +91,23 @@ class Generic extends CredentialsClient
         }
 
         return parent::beforeSave($isNew);
+    }
+
+
+    // Protected Methods
+    // =========================================================================
+
+    protected function defineRules(): array
+    {
+        $rules = parent::defineRules();
+
+        $rules[] = [
+            ['url'], 'required', 'when' => function($model) {
+                return $model->enabled;
+            },
+        ];
+
+        return $rules;
     }
 
 }

@@ -1,6 +1,7 @@
 <?php
 namespace verbb\consume\services;
 
+use verbb\consume\Consume;
 use verbb\consume\base\Client;
 use verbb\consume\base\ClientInterface;
 use verbb\consume\clients\credentials as credentialTypes;
@@ -260,7 +261,7 @@ class Clients extends Component
         }
 
         if ($runValidation && !$client->validate()) {
-            Craft::info('Client not saved due to validation error.', __METHOD__);
+            Consume::info('Client not saved due to validation error.');
             return false;
         }
 

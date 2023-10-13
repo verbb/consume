@@ -28,19 +28,6 @@ class Generic extends OAuthClient
     // Public Methods
     // =========================================================================
 
-    public function defineRules(): array
-    {
-        $rules = parent::defineRules();
-
-        $rules[] = [
-            ['url'], 'required', 'when' => function($model) {
-                return $model->enabled;
-            },
-        ];
-
-        return $rules;
-    }
-
     public function getOAuthProviderConfig(): array
     {
         $config = parent::getOAuthProviderConfig();
@@ -55,6 +42,23 @@ class Generic extends OAuthClient
         $config = array_merge($config, $this->getProviderOptions());
 
         return $config;
+    }
+
+
+    // Protected Methods
+    // =========================================================================
+
+    protected function defineRules(): array
+    {
+        $rules = parent::defineRules();
+
+        $rules[] = [
+            ['url'], 'required', 'when' => function($model) {
+                return $model->enabled;
+            },
+        ];
+
+        return $rules;
     }
 
 }
