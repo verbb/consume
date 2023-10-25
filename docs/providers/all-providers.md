@@ -92,7 +92,7 @@ Consume integrates with the following providers:
 - [Zoho](https://zoho.com)
 
 :::tip
-Is your provider not in the list above? [Contact us](https://verbb.io/contact) to submit your interest, or look at the [Custom Provider](docs:developers/custom-provider) docs to write your own provider support.
+Is your provider not in the list above? [Contact us](https://verbb.io/contact) to submit your interest, or look at the [Custom Provider](docs:developers/client-type) docs to write your own provider support.
 :::
 
 ## Amazon
