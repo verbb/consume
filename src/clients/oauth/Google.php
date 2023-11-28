@@ -50,6 +50,7 @@ class Google extends OAuthClient
     {
         $options = parent::getAuthorizationUrlOptions();
         $options['access_type'] = 'offline';
+        $options['prompt'] = 'consent';
         
         return $options;
     }
