@@ -46,4 +46,12 @@ class Google extends OAuthClient
         return $uri;
     }
 
+    public function getAuthorizationUrlOptions(): array
+    {
+        $options = parent::getAuthorizationUrlOptions();
+        $options['access_type'] = 'offline';
+        
+        return $options;
+    }
+
 }
