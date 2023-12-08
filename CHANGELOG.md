@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.5 - 2023-12-08
+
+### Fixed
+- Fix Google offline access type.
+
 ## 1.0.4 - 2023-10-05
 > {warning} If you are using LinkedIn, your LinkedIn app will need to now include the **Sign In with LinkedIn using OpenID Connect** product.
 
