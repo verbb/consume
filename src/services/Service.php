@@ -99,7 +99,10 @@ class Service extends Component
             // Otherwise, we're probably passing in Guzzle settings for an in-template call
             // Normalise the Base URI and URI
             $uri = ltrim($uri, '/');
-            $clientOpts['base_uri'] = AuthUrlHelper::normalizeBaseUri(($clientOpts['base_uri'] ?? ''));
+
+            if (isset($clientOpts['base_uri'])) {
+                $clientOpts['base_uri'] = rtrim($clientOpts['base_uri'], '/');
+            }
 
             $client = Craft::createGuzzleClient($clientOpts);
             $response = $client->request($method, $uri, $options);
