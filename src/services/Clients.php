@@ -79,6 +79,7 @@ class Clients extends Component
             oauthTypes\Etsy::class,
             oauthTypes\Eventbrite::class,
             oauthTypes\Facebook::class,
+            oauthTypes\Fedex::class,
             oauthTypes\Fitbit::class,
             oauthTypes\Foursquare::class,
             oauthTypes\FreshBooks::class,
