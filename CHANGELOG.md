@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.6 - 2023-12-17
+
+### Added
+- Add Fedex client.
+- Add the ability to set different grants on generic OAuth clients.
+
 ## 1.0.5 - 2023-12-08
 
 ### Fixed
