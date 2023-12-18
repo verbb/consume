@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.8 - 2023-12-18
+
+### Fixed
+- Fix requests not working correctly when either the `uri`, `url` or `baseUri` contained a dot character, or ended in a filename.
+
 ## 1.0.7 - 2023-12-17
 
 ### Fixed
