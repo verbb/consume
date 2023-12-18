@@ -2,6 +2,7 @@
 namespace verbb\consume\services;
 
 use verbb\consume\Consume;
+use verbb\consume\base\OAuthClient;
 use verbb\consume\models\Settings;
 
 use Craft;
@@ -14,6 +15,7 @@ use craft\helpers\UrlHelper;
 
 use DateTime;
 use DateTimeZone;
+use Exception;
 use Throwable;
 
 use yii\caching\TagDependency;
@@ -88,6 +90,13 @@ class Service extends Component
                 if ($client = Consume::$plugin->getClients()->getClientByHandle($handle)) {
                     // Configure the client with any additional options passed in
                     $client->setProviderOptions($clientOpts);
+
+                    if ($client instanceof OAuthClient) {
+                        // Provide a nicer error message when token is missing
+                        if (!$client->getToken()) {
+                            throw new Exception('Client token missing, please ensure the client is connected.');
+                        }
+                    }
 
                     // Make an authenticated request, either OAuth-based, or Guzzle
                     $response = $client->request($method, $uri, $options);
