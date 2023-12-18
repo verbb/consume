@@ -86,6 +86,25 @@ class Service extends Component
             $format = ArrayHelper::remove($clientOpts, 'format', 'json');
             $handle = ArrayHelper::remove($clientOpts, 'handle');
 
+            // Otherwise, we're probably passing in Guzzle settings for an in-template call
+            // Normalise the Base URI and URI
+            $uri = ltrim($uri, '/');
+
+            // Normalize the Base URI if we provide a URI. Sometimes, we may provide the "Base URI" as
+            // the full URL for the request which can throw an error if we add a trailing slash.
+            // `baseUri` = `https://api.dev/v12/api.php`
+            // We might also provide a URI when needs a trialing slash to work properly with Guzzle, 
+            // and according to their spec. This can be seen for some URLs like:
+            // `baseUri` = `https://api.dev/v12.0`
+            // `uri` = `test/endpoint`
+            // where without the trailing slash, `v12.0` would be stripped. But would would want to include
+            // the trailing slash if there was no URI, in case it's the full, absolute URL used as the Base URI.
+            if ($uri) {
+                if (isset($clientOpts['base_uri']) && !str_ends_with($clientOpts['base_uri'], '/')) {
+                    $clientOpts['base_uri'] .= '/';
+                }
+            }
+        
             if ($handle) {
                 if ($client = Consume::$plugin->getClients()->getClientByHandle($handle)) {
                     // Configure the client with any additional options passed in
@@ -105,15 +124,8 @@ class Service extends Component
                 }
             }
 
-            // Otherwise, we're probably passing in Guzzle settings for an in-template call
-            // Normalise the Base URI and URI
-            $uri = ltrim($uri, '/');
-
-            if (isset($clientOpts['base_uri'])) {
-                $clientOpts['base_uri'] = rtrim($clientOpts['base_uri'], '/');
-            }
-
             $client = Craft::createGuzzleClient($clientOpts);
+
             $response = $client->request($method, $uri, $options);
 
             return $this->_parseResponse($format, $response);
