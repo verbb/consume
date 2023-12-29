@@ -92,7 +92,7 @@ Consume integrates with the following providers:
 - [Zoho](https://zoho.com)
 
 :::tip
-Is your provider not in the list above? [Contact us](https://verbb.io/contact) to submit your interest, or look at the [Custom Provider](docs:developers/custom-provider) docs to write your own provider support.
+Is your provider not in the list above? [Contact us](https://verbb.io/contact) to submit your interest, or look at the [Custom Provider](docs:developers/client-type) docs to write your own provider support.
 :::
 
 ## Amazon
@@ -701,7 +701,7 @@ Follow the below steps to connect to the LinkedIn API.
 1. Go to <a href="https://www.linkedin.com/developers/apps/new" target="_blank">LinkedIn</a> and login to your account.
 1. Click the **Create App** button and complete all the required fields.
 1. Navigate to the **Products** section.
-1. Click the **Select** button for the **Sign In with LinkedIn** product.
+1. Click the **Select** button for the **Sign In with LinkedIn using OpenID Connect** product.
 1. Navigate to the **Auth** section.
 1. Click the edit icon for the **Authorized Redirect URLs** field.
 1. Enter the value from the **Redirect URI** field in Consume.

@@ -5,6 +5,21 @@
 
 <hr>
 
+{{ forms.selectField({
+    label: 'Grant' | t('consume'),
+    instructions: 'Select the type of OAuth Grant to use.' | t('consume'),
+    name: 'grant',
+    required: true,
+    value: client.grant ?? '',
+    options: [
+        { label: 'Authorization Code' | t('consume'), value: 'authorization_code' },
+        { label: 'Client Credentials' | t('consume'), value: 'client_credentials' },
+        { label: 'Password' | t('consume'), value: 'password' },
+    ],
+    warning: macros.configWarning("clients.#{client.handle}.grant", 'consume'),
+    errors: client.getErrors('grant'),
+}) }}
+
 {{ forms.autosuggestField({
     label: 'Authorization URL' | t('consume'),
     instructions: 'Enter the Authorization URL for this provider.' | t('consume'),

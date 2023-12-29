@@ -2,8 +2,10 @@
 You can register your own Client Type to add support for other APIs, endpoints, or even extend an existing Client Type.
 
 ```php
-use modules\MyClientProvider;
+namespace modules\sitemodule;
 
+use modules\sitemodule\MyCredentialsClientProvider;
+use modules\sitemodule\MyOAuthClientProvider;
 use verbb\consume\events\RegisterClientsEvent;
 use verbb\consume\services\Clients;
 use yii\base\Event;
@@ -20,7 +22,7 @@ You'll need to decide whether to create an `oauth` or `credentials` client, depe
 Create the following class to house your Client Type logic.
 
 ```php
-namespace modules;
+namespace modules\sitemodule;
 
 use verbb\consume\base\OAuthClient;
 use verbb\consume\models\Post;

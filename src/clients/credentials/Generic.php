@@ -41,7 +41,7 @@ class Generic extends CredentialsClient
         $url = App::parseEnv($this->url);
 
         $config = array_filter([
-            'base_uri' => AuthUrlHelper::normalizeBaseUri($url),
+            'base_uri' => rtrim($url, '/'),
         ]);
 
         if ($this->headers) {

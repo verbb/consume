@@ -23,10 +23,16 @@ class Generic extends OAuthClient
     public ?string $url = null;
     public ?string $authorizationUrl = null;
     public ?string $tokenUrl = null;
+    public ?string $grant = 'authorization_code';
 
 
     // Public Methods
     // =========================================================================
+
+    public function getGrant(): string
+    {
+        return $this->grant;
+    }
 
     public function getOAuthProviderConfig(): array
     {
