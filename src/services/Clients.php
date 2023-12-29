@@ -18,6 +18,7 @@ use craft\errors\MissingComponentException;
 use craft\events\RegisterComponentTypesEvent;
 use craft\helpers\ArrayHelper;
 use craft\helpers\Component as ComponentHelper;
+use craft\helpers\Db;
 use craft\helpers\Json;
 
 use yii\base\Component;
@@ -354,9 +355,7 @@ class Clients extends Component
             ]));
         }
 
-        Craft::$app->getDb()->createCommand()
-            ->delete('{{%consume_clients}}', ['id' => $client->id])
-            ->execute();
+        Db::delete('{{%consume_clients}}', ['id' => $client->id]);
 
         // Fire an 'afterDeleteClient' event
         if ($this->hasEventHandlers(self::EVENT_AFTER_DELETE_CLIENT)) {

@@ -5,6 +5,7 @@ use verbb\consume\Consume;
 
 use Craft;
 use craft\base\SavableComponent;
+use craft\helpers\Db;
 use craft\helpers\Json;
 use craft\helpers\StringHelper;
 use craft\helpers\UrlHelper;
@@ -168,9 +169,7 @@ abstract class Client extends SavableComponent implements ClientInterface
         $data = Json::encode($this->cache);
 
         // Direct DB update to keep it out of PC, plus speed
-        Craft::$app->getDb()->createCommand()
-            ->update('{{%consume_clients}}', ['cache' => $data], ['id' => $this->id])
-            ->execute();
+        Db::update('{{%consume_clients}}', ['cache' => $data], ['id' => $this->id]);
     }
 
     protected function getSettingCache(string $key): mixed
