@@ -149,7 +149,6 @@ class Service extends Component
 
             return $this->_parseResponse($format, $response);
         } catch (Throwable $e) {
-            \markhuot\craftpest\helpers\test\dd($e);
             Consume::error('Unable to fetch data: “{message}” {file}:{line}. Trace: “{trace}”.', [
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
