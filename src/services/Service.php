@@ -3,6 +3,7 @@ namespace verbb\consume\services;
 
 use verbb\consume\Consume;
 use verbb\consume\base\OAuthClient;
+use verbb\consume\events\FetchEvent;
 use verbb\consume\models\Settings;
 
 use Craft;
@@ -18,6 +19,7 @@ use DateTimeZone;
 use Exception;
 use Throwable;
 
+use yii\base\Event;
 use yii\caching\TagDependency;
 
 use verbb\auth\helpers\UrlHelper as AuthUrlHelper;
@@ -27,11 +29,28 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 class Service extends Component
 {
+    // Constants
+    // =========================================================================
+    public const EVENT_BEFORE_FETCH_DATA = 'beforeFetchData';
+
     // Public Methods
     // =========================================================================
 
     public function fetchData(array|string $clientOpts, string $method = 'GET', string $uri = '', array $options = []): mixed
     {
+        $event = new FetchEvent([
+            'clientOpts' => $clientOpts,
+            'method' => $method,
+            'uri' => $uri,
+            'options' => $options,
+        ]);
+
+        Event::trigger(self::class, self::EVENT_BEFORE_FETCH_DATA, $event);
+
+        if (! $event->isValid) {
+            return $event->response;
+        }
+
         $settings = Consume::$plugin->getSettings();
 
         // Allow overriding cache/duration in templates
@@ -130,6 +149,7 @@ class Service extends Component
 
             return $this->_parseResponse($format, $response);
         } catch (Throwable $e) {
+            \markhuot\craftpest\helpers\test\dd($e);
             Consume::error('Unable to fetch data: “{message}” {file}:{line}. Trace: “{trace}”.', [
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
