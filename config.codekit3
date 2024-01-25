@@ -536,6 +536,14 @@
       "oAP" : "\/src\/clients\/oauth\/Facebook-output.php",
       "oF" : 0
     },
+    "\/src\/clients\/oauth\/Fedex.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 1,
+      "oAP" : "\/src\/clients\/oauth\/Fedex-output.php",
+      "oF" : 0
+    },
     "\/src\/clients\/oauth\/Fitbit.php" : {
       "cB" : 0,
       "ft" : 8192,
