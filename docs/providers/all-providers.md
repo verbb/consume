@@ -1284,3 +1284,4 @@ Follow the below steps to connect to the Zoho API.
 1. In the **Authorized Redirect URIs** field, enter the value from the **Redirect URI** field in Consume.
 1. Copy the **Client ID** from Zoho and paste in the **Client ID** field in Consume.
 1. Copy the **Client Secret** from Zoho and paste in the **Client Secret** field in Consume.
+1. Be sure to also change your **Data Center** value to match the data center your Zoho account is on.
