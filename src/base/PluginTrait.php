@@ -29,7 +29,6 @@ trait PluginTrait
 
     public static function config(): array
     {
-        Auth::registerModule();
         Plugin::bootstrapPlugin('consume');
 
         return [
