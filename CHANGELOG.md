@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.9 - 2024-02-08
+
+### Added
+- Add `includeErrorResponse` as a request option to allow API errors to be returned in an `error` property.
+- Add `Service::EVENT_BEFORE_FETCH_DATA` event to handle before data is fetched. (thanks @markhuot).
+
+### Fixed
+- Fix Zoho not working for multiple data centers.
+
 ## 1.0.8 - 2023-12-18
 
 ### Fixed

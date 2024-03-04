@@ -430,7 +430,7 @@ Follow the below steps to connect to the Facebook API.
 1. Select **None** as the **App Type**, and fill in the rest of the details.
 1. Once created, in the left-hand sidebar, click the **Add Product** button and select **Facebook Login**.
 1. Select **Web** as the type and your website address into **Site URL**.
-1. Navigate to **Facebook Login** section in the left-hand siderbar, click **Settings**.
+1. Navigate to **Facebook Login** section in the left-hand sidebar, click **Settings**.
 1. For the **Valid OAuth Redirect URIs** setting, enter the value from the **Redirect URI** field in Consume.
 1. Click the **Save Changes** button.
 1. Navigate to **App Review** → **Requests**.
@@ -1284,3 +1284,4 @@ Follow the below steps to connect to the Zoho API.
 1. In the **Authorized Redirect URIs** field, enter the value from the **Redirect URI** field in Consume.
 1. Copy the **Client ID** from Zoho and paste in the **Client ID** field in Consume.
 1. Copy the **Client Secret** from Zoho and paste in the **Client Secret** field in Consume.
+1. Be sure to also change your **Data Center** value to match the data center your Zoho account is on.

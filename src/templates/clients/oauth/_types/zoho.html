@@ -1,1 +1,23 @@
+{% import '_includes/forms' as forms %}
+{% import 'verbb-base/_macros' as macros %}
+
 {% include 'consume/clients/oauth/_oauth' %}
+
+{{ forms.selectField({
+    label: 'Data Center' | t('consume'),
+    instructions: 'Select your {provider} Data Center here.' | t('consume', { provider: client.providerName }),
+    name: 'dataCenter',
+    required: true,
+    suggestEnvVars: true,
+    value: client.dataCenter ?? '',
+    options: [
+        { label: 'US' | t('consume'), value: 'US' },
+        { label: 'AU' | t('consume'), value: 'AU' },
+        { label: 'EU' | t('consume'), value: 'EU' },
+        { label: 'IN' | t('consume'), value: 'IN' },
+        { label: 'CN' | t('consume'), value: 'CN' },
+        { label: 'JP' | t('consume'), value: 'JP' },
+    ],
+    warning: macros.configWarning("clients.#{client.handle}.dataCenter", 'consume'),
+    errors: client.getErrors('dataCenter'),
+}) }}

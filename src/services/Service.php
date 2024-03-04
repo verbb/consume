@@ -3,6 +3,7 @@ namespace verbb\consume\services;
 
 use verbb\consume\Consume;
 use verbb\consume\base\OAuthClient;
+use verbb\consume\events\FetchEvent;
 use verbb\consume\models\Settings;
 
 use Craft;
@@ -18,7 +19,10 @@ use DateTimeZone;
 use Exception;
 use Throwable;
 
+use yii\base\Event;
 use yii\caching\TagDependency;
+
+use GuzzleHttp\Exception\RequestException;
 
 use verbb\auth\helpers\UrlHelper as AuthUrlHelper;
 
@@ -27,11 +31,28 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 class Service extends Component
 {
+    // Constants
+    // =========================================================================
+    public const EVENT_BEFORE_FETCH_DATA = 'beforeFetchData';
+
     // Public Methods
     // =========================================================================
 
     public function fetchData(array|string $clientOpts, string $method = 'GET', string $uri = '', array $options = []): mixed
     {
+        $event = new FetchEvent([
+            'clientOpts' => $clientOpts,
+            'method' => $method,
+            'uri' => $uri,
+            'options' => $options,
+        ]);
+
+        Event::trigger(self::class, self::EVENT_BEFORE_FETCH_DATA, $event);
+
+        if (! $event->isValid) {
+            return $event->response;
+        }
+
         $settings = Consume::$plugin->getSettings();
 
         // Allow overriding cache/duration in templates
@@ -86,6 +107,9 @@ class Service extends Component
             $format = ArrayHelper::remove($clientOpts, 'format', 'json');
             $handle = ArrayHelper::remove($clientOpts, 'handle');
 
+            // See if we want to include any errors in the response, rather than return `null`
+            $includeErrorResponse = ArrayHelper::remove($options, 'includeErrorResponse', false);
+
             // Otherwise, we're probably passing in Guzzle settings for an in-template call
             // Normalise the Base URI and URI
             $uri = ltrim($uri, '/');
@@ -136,6 +160,11 @@ class Service extends Component
                 'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString(),
             ]);
+
+            // Check if we want to return any errors rather than just return `null`
+            if ($e instanceof RequestException && $includeErrorResponse) {
+                return ['error' => $this->_parseResponse($format, $e->getResponse())];
+            }
         }
 
         return null;
