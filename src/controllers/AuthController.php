@@ -46,7 +46,7 @@ class AuthController extends Controller
             // Keep track of which client instance is for, so we can fetch it in the callback
             Session::set('clientHandle', $clientHandle);
 
-            return Auth::$plugin->getOAuth()->connect('consume', $client);
+            return Auth::getInstance()->getOAuth()->connect('consume', $client);
         } catch (Throwable $e) {
             Consume::error('Unable to authorize connect “{client}”: “{message}” {file}:{line}', [
                 'client' => $clientHandle,
@@ -80,7 +80,7 @@ class AuthController extends Controller
 
         try {
             // Fetch the access token from the client and create a Token for us to use
-            $token = Auth::$plugin->getOAuth()->callback('consume', $client);
+            $token = Auth::getInstance()->getOAuth()->callback('consume', $client);
 
             if (!$token) {
                 Session::setError('consume', Craft::t('consume', 'Unable to fetch token.'), true);
@@ -90,7 +90,7 @@ class AuthController extends Controller
 
             // Save the token to the Auth plugin, with a reference to this client
             $token->reference = $client->id;
-            Auth::$plugin->getTokens()->upsertToken($token);
+            Auth::getInstance()->getTokens()->upsertToken($token);
         } catch (Throwable $e) {
             $error = Craft::t('consume', 'Unable to process callback for “{client}”: “{message}” {file}:{line}', [
                 'client' => $clientHandle,
@@ -121,7 +121,7 @@ class AuthController extends Controller
         }
 
         // Delete all tokens for this client
-        Auth::$plugin->getTokens()->deleteTokenByOwnerReference('consume', $client->id);
+        Auth::getInstance()->getTokens()->deleteTokenByOwnerReference('consume', $client->id);
 
         return $this->asModelSuccess($client, Craft::t('consume', '{provider} disconnected.', ['provider' => $client->providerName]), 'client');
     }

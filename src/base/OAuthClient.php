@@ -92,7 +92,7 @@ abstract class OAuthClient extends Client implements OAuthProviderInterface
     public function getToken(): ?Token
     {
         if ($this->id) {
-            return Auth::$plugin->getTokens()->getTokenByOwnerReference('consume', $this->id);
+            return Auth::getInstance()->getTokens()->getTokenByOwnerReference('consume', $this->id);
         }
 
         return null;
