@@ -53,7 +53,7 @@
 {% endif %}
 
 <input type="hidden" name="action" value="consume/clients/save">
-{% if client.id %}<input type="hidden" name="clientId" value="{{ client.id }}">{% endif %}
+{% if client.id %}<input type="hidden" name="id" value="{{ client.id }}">{% endif %}
 {{ redirectInput('consume/clients') }}
 
 <div id="client">

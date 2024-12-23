@@ -42,7 +42,7 @@ class ClientsController extends Controller
         $this->requirePostRequest();
 
         $clientsService = Consume::$plugin->getClients();
-        $clientId = $this->request->getParam('clientId') ?: null;
+        $clientId = $this->request->getParam('id') ?: null;
         $type = $this->request->getParam('type');
 
         if ($clientId) {
@@ -83,7 +83,6 @@ class ClientsController extends Controller
     public function actionDelete(): Response
     {
         $this->requirePostRequest();
-        $this->requireAcceptsJson();
 
         $clientId = $this->request->getRequiredBodyParam('id');
 
