@@ -5,7 +5,7 @@
 
 {{ macros.proxyField(fieldVariables, 'booleanMenuField', {
     label: 'Proxy Redirect URI' | t('consume'),
-    instructions: 'Whether to proxy the redirect URI through Verbb‘s servers. This should **only** be used for local testing. See [docs](https://verbb.io/craft-plugins/consume/docs/feature-tour/clients#local-testing-proxy) for more.' | t('consume') | md,
+    instructions: 'Whether to proxy the redirect URI through Verbb‘s servers. This should **only** be used for local testing. See [docs](https://verbb.io/craft-plugins/consume/docs/providers/all-providers#local-testing-proxy) for more.' | t('consume') | md,
     name: 'proxyRedirect',
     includeEnvVars: true,
     value: client.proxyRedirect ?? false,
