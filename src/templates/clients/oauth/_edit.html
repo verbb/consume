@@ -127,7 +127,7 @@
             </div>
         {% else %}
             <div class="heading">
-                <span class="status"></span><span class="light">{{ 'Provider not configured' | t('consume') }}</span>
+                <span class="status disabled"></span><span class="light">{{ 'Provider not configured' | t('consume') }}</span>
             </div>
         {% endif %}
     </div>
@@ -145,7 +145,7 @@
     {% else %}
         <div class="field lightswitch-field consume-connect">
             <div class="heading">
-                <span class="status"></span><span class="light">{{ 'Not Connected' | t('consume') }}</span>
+                <span class="status disabled"></span><span class="light">{{ 'Not Connected' | t('consume') }}</span>
             </div>
 
             <div class="input ltr">
