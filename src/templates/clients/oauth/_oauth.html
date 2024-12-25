@@ -1,6 +1,10 @@
 {% import '_includes/forms' as forms %}
 {% import 'verbb-base/_macros' as macros %}
 
+{# Backwards compatibility, remove at the next breakpoint #}
+{% set settingsVariables = client.getSettingsHtmlVariables() %}
+{% set fieldVariables = fieldVariables ?? settingsVariables.fieldVariables %}
+
 {% set instructions %}
 To connect to {name}, follow our <a href="https://verbb.io/craft-plugins/consume/docs/providers/all-providers" target="_blank" rel="noopener">{name} provider guide</a>.
 {% endset %}
