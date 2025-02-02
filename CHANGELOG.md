@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.0.2 - 2025-02-03
+
+### Added
+- Add CA to Zoho domains.
+- Add `consume/tokens/refresh` console command.
+
+### Fixed
+- Fix backward compatibility check for custom clients and proxy field setting support.
+- Fix status indicators.
+- Fix deleting a client not working from the editing client interface.
+
 ## 2.0.1 - 2024-07-21
 
 ### Changed
