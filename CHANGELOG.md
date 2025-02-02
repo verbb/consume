@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.13 - 2025-02-03
+
+### Added
+- Add CA to Zoho domains.
+
 ## 1.0.12 - 2024-07-21
 
 ### Changed
