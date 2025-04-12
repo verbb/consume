@@ -6,7 +6,7 @@ use verbb\consume\base\OAuthClient;
 use craft\helpers\App;
 
 use verbb\auth\Auth;
-use verbb\auth\providers\Paypal as PaypalProvider;
+use verbb\auth\providers\PayPal as PayPalProvider;
 
 class PayPal extends OAuthClient
 {
@@ -15,7 +15,7 @@ class PayPal extends OAuthClient
 
     public static function getOAuthProviderClass(): string
     {
-        return PaypalProvider::class;
+        return PayPalProvider::class;
     }
 
 

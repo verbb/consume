@@ -4,7 +4,7 @@ namespace verbb\consume\clients\oauth;
 use verbb\consume\base\OAuthClient;
 
 use verbb\auth\Auth;
-use verbb\auth\providers\Github as GithubProvider;
+use verbb\auth\providers\GitHub as GitHubProvider;
 
 class GitHub extends OAuthClient
 {
@@ -13,7 +13,7 @@ class GitHub extends OAuthClient
 
     public static function getOAuthProviderClass(): string
     {
-        return GithubProvider::class;
+        return GitHubProvider::class;
     }
 
 
