@@ -61,7 +61,7 @@
             if (value) {
                 return '<span class="status on"></span>' + Craft.t('consume', 'Enabled');
             } else {
-                return '<span class="status"></span>' + Craft.t('consume', 'Disabled');
+                return '<span class="status disabled"></span>' + Craft.t('consume', 'Disabled');
             }
         } },
         { name: 'connected', title: Craft.t('app', 'Connected'), callback: function(value) {
@@ -70,7 +70,7 @@
             } else if (value) {
                 return '<span class="status on"></span>' + Craft.t('consume', 'Connected');
             } else {
-                return '<span class="status"></span>' + Craft.t('consume', 'Disconnected');
+                return '<span class="status disabled"></span>' + Craft.t('consume', 'Disconnected');
             }
         } },
         { name: 'type', title: Craft.t('consume', 'Type') },
