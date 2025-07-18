@@ -33,6 +33,11 @@
 - Now requires PHP `8.2.0+`.
 - Now requires Craft `5.0.0+`.
 
+## 1.0.14 - 2025-07-18
+
+### Changed
+- Update English translations.
+
 ## 1.0.13 - 2025-02-03
 
 ### Added
@@ -90,6 +95,7 @@
 - Fix Google offline access type.
 
 ## 1.0.4 - 2023-10-05
+
 > {warning} If you are using LinkedIn, your LinkedIn app will need to now include the **Sign In with LinkedIn using OpenID Connect** product.
 
 ### Changed
