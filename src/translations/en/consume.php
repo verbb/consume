@@ -97,7 +97,7 @@ return [
   'Value' => 'Value',
   'What this client will be called in the control panel.' => 'What this client will be called in the control panel.',
   'Whether to cache API requests.' => 'Whether to cache API requests.',
-  'Whether to proxy the redirect URI through Verbb‘s servers. This should **only** be used for local testing. See [docs](https://verbb.io/craft-plugins/consume/docs/feature-tour/clients#local-testing-proxy) for more.' => 'Whether to proxy the redirect URI through Verbb‘s servers. This should **only** be used for local testing. See [docs](https://verbb.io/craft-plugins/consume/docs/feature-tour/clients#local-testing-proxy) for more.',
+  'Whether to proxy the redirect URI through Verbb‘s servers. This should **only** be used for local testing. See [docs](https://verbb.io/craft-plugins/consume/docs/providers/all-providers#local-testing-proxy) for more.' => 'Whether to proxy the redirect URI through Verbb‘s servers. This should **only** be used for local testing. See [docs](https://verbb.io/craft-plugins/consume/docs/providers/all-providers#local-testing-proxy) for more.',
   'Whether to use the {provider} sandbox.' => 'Whether to use the {provider} sandbox.',
   '{provider} connected.' => '{provider} connected.',
   '{provider} disconnected.' => '{provider} disconnected.',
