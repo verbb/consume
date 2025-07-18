@@ -39,6 +39,11 @@
 - Now requires PHP `8.2.0+`.
 - Now requires Craft `5.0.0+`.
 
+## 1.0.15 - 2025-07-18
+
+### Changed
+- Update `symfony/property-access` and `symfony/serializer` dependency.
+
 ## 1.0.14 - 2025-07-18
 
 ### Changed
