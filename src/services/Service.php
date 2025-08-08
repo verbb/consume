@@ -197,6 +197,10 @@ class Service extends Component
             return (new CsvEncoder())->decode($body, 'csv');
         }
 
+        if ($format === 'raw') {
+            return $response;
+        }
+
         return $body;
     }
 
