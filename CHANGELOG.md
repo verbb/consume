@@ -44,6 +44,11 @@
 - Now requires PHP `8.2.0+`.
 - Now requires Craft `5.0.0+`.
 
+## 1.0.16 - 2025-08-12
+
+### Added
+- Add support for `raw` response handling for requests.
+
 ## 1.0.15 - 2025-07-18
 
 ### Changed
