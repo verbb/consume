@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.6 - 2025-08-13
+
+### Added
+- Add support for `raw` response handling for requests.
+
 ## 2.0.5 - 2025-07-18
 
 ### Changed
