@@ -5,6 +5,8 @@
 
 <hr>
 
+{% set grant = client.grant ?? 'authorization_code' %}
+
 {{ macros.proxyField(fieldVariables, 'selectField', {
     label: 'Grant' | t('consume'),
     instructions: 'Select the type of OAuth Grant to use.' | t('consume'),
@@ -16,9 +18,35 @@
         { label: 'Client Credentials' | t('consume'), value: 'client_credentials' },
         { label: 'Password' | t('consume'), value: 'password' },
     ],
+    toggle: true,
+    targetPrefix: '.oauth-settings-',
     warning: macros.configWarning("clients.#{client.handle}.grant", 'consume'),
     errors: client.getErrors('grant'),
 }) }}
+
+<div class="oauth-settings-client_credentials oauth-settings-password {% if grant != 'client_credentials' and grant != 'password' %}hidden{% endif %}">
+    {{ macros.proxyField(fieldVariables, 'autosuggestField', {
+        label: 'Username' | t('consume'),
+        instructions: 'Enter the {label} for this provider.' | t('consume'),
+        name: 'username',
+        required: true,
+        suggestEnvVars: true,
+        value: client.username ?? '',
+        warning: macros.configWarning("clients.#{client.handle}.username", 'consume'),
+        errors: client.getErrors('username'),
+    }) }}
+
+    {{ macros.proxyField(fieldVariables, 'autosuggestField', {
+        label: 'Password' | t('consume'),
+        instructions: 'Enter the {label} for this provider.' | t('consume'),
+        name: 'password',
+        required: true,
+        suggestEnvVars: true,
+        value: client.password ?? '',
+        warning: macros.configWarning("clients.#{client.handle}.password", 'consume'),
+        errors: client.getErrors('password'),
+    }) }}
+</div>
 
 {{ macros.proxyField(fieldVariables, 'autosuggestField', {
     label: 'Authorization URL' | t('consume'),
