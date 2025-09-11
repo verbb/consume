@@ -48,27 +48,29 @@
     }) }}
 </div>
 
-{{ macros.proxyField(fieldVariables, 'autosuggestField', {
-    label: 'Authorization URL' | t('consume'),
-    instructions: 'Enter the {label} for this provider.' | t('consume'),
-    name: 'authorizationUrl',
-    required: true,
-    suggestEnvVars: true,
-    value: client.authorizationUrl ?? '',
-    warning: macros.configWarning("clients.#{client.handle}.authorizationUrl", 'consume'),
-    errors: client.getErrors('authorizationUrl'),
-}) }}
+<div class="oauth-settings-authorization_code {% if grant != 'authorization_code' %}hidden{% endif %}">
+    {{ macros.proxyField(fieldVariables, 'autosuggestField', {
+        label: 'Authorization URL' | t('consume'),
+        instructions: 'Enter the {label} for this provider.' | t('consume'),
+        name: 'authorizationUrl',
+        required: true,
+        suggestEnvVars: true,
+        value: client.authorizationUrl ?? '',
+        warning: macros.configWarning("clients.#{client.handle}.authorizationUrl", 'consume'),
+        errors: client.getErrors('authorizationUrl'),
+    }) }}
 
-{{ macros.proxyField(fieldVariables, 'autosuggestField', {
-    label: 'Token URL' | t('consume'),
-    instructions: 'Enter the {label} for this provider.' | t('consume'),
-    name: 'tokenUrl',
-    required: true,
-    suggestEnvVars: true,
-    value: client.tokenUrl ?? '',
-    warning: macros.configWarning("clients.#{client.handle}.tokenUrl", 'consume'),
-    errors: client.getErrors('tokenUrl'),
-}) }}
+    {{ macros.proxyField(fieldVariables, 'autosuggestField', {
+        label: 'Token URL' | t('consume'),
+        instructions: 'Enter the {label} for this provider.' | t('consume'),
+        name: 'tokenUrl',
+        required: true,
+        suggestEnvVars: true,
+        value: client.tokenUrl ?? '',
+        warning: macros.configWarning("clients.#{client.handle}.tokenUrl", 'consume'),
+        errors: client.getErrors('tokenUrl'),
+    }) }}
+</div>
 
 {{ macros.proxyField(fieldVariables, 'autosuggestField', {
     label: 'API URL' | t('consume'),
