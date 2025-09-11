@@ -2,6 +2,7 @@
 namespace verbb\consume\base;
 
 use verbb\consume\Consume;
+use verbb\consume\records\Client as ClientRecord;
 
 use Craft;
 use craft\base\SavableComponent;
@@ -10,6 +11,7 @@ use craft\helpers\Json;
 use craft\helpers\StringHelper;
 use craft\helpers\UrlHelper;
 use craft\validators\HandleValidator;
+use craft\validators\UniqueValidator;
 
 use verbb\auth\helpers\Provider as ProviderHelper;
 
@@ -156,6 +158,12 @@ abstract class Client extends SavableComponent implements ClientInterface
 
         $rules[] = [['name', 'handle'], 'required'];
         $rules[] = [['id'], 'number', 'integerOnly' => true];
+
+        $rules[] = [
+            ['name'],
+            UniqueValidator::class,
+            'targetClass' => ClientRecord::class,
+        ];
 
         $rules[] = [
             ['handle'],

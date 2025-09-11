@@ -25,6 +25,8 @@ class Generic extends OAuthClient
     public ?string $url = null;
     public ?string $authorizationUrl = null;
     public ?string $tokenUrl = null;
+    public ?string $username = null;
+    public ?string $password = null;
     public ?string $grant = 'authorization_code';
 
 
