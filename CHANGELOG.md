@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.17 - 2025-09-16
+
+### Added
+- Add username and password to Generic OAuth client settings.
+
+### Fixed
+- Fix “Authorization URL” and “Token URL” from being shown for a “Client Credentials” type client.
+- Fix error handling for duplicate-named clients.
+
 ## 1.0.16 - 2025-08-12
 
 ### Added
