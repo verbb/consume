@@ -432,14 +432,6 @@
       "oAP" : "\/src\/clients\/oauth\/Buffer-output.php",
       "oF" : 0
     },
-    "\/src\/clients\/oauth\/CiviCrm.php" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 1,
-      "oAP" : "\/src\/clients\/oauth\/CiviCrm-output.php",
-      "oF" : 0
-    },
     "\/src\/clients\/oauth\/ConstantContact.php" : {
       "cB" : 0,
       "ft" : 8192,
