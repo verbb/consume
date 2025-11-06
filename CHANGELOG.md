@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.8 - 2025-11-06
+
+### Added
+- Add better trace information for logging when connecting to OAuth provider.
+
 ## 2.0.7 - 2025-09-16
 
 ### Added
