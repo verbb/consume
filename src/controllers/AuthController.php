@@ -48,11 +48,12 @@ class AuthController extends Controller
 
             return Auth::getInstance()->getOAuth()->connect('consume', $client);
         } catch (Throwable $e) {
-            Consume::error('Unable to authorize connect “{client}”: “{message}” {file}:{line}', [
+            Consume::error('Unable to authorize connect “{client}”: “{message}” {file}:{line}. Trace: “{trace}”', [
                 'client' => $clientHandle,
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
             ]);
 
             return $this->asFailure(Craft::t('consume', 'Unable to authorize connect “{client}”.', ['client' => $clientHandle]));
@@ -102,7 +103,14 @@ class AuthController extends Controller
                 'line' => $e->getLine(),
             ]);
 
-            Consume::error($error);
+            // Log differently to file
+            Consume::error('Unable to process callback for “{client}”: “{message}” {file}:{line}. Trace: “{trace}”', [
+                'client' => $clientHandle,
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
+            ]);
 
             // Show the error detail in the CP
             Craft::$app->getSession()->setFlash('consume:callback-error', $error);
