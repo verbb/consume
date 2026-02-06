@@ -43,6 +43,13 @@ class AuthController extends Controller
                 return $this->asFailure(Craft::t('consume', 'Unable to find client “{client}”.', ['client' => $clientHandle]));
             }
 
+            // Handle redirection correctly for CP-based requests, as we need to session-store it.
+            if ($this->request->getIsCpRequest()) {
+                if ($redirect = $this->request->getValidatedBodyParam('redirect')) {
+                    Session::set('redirect', $this->getView()->renderObjectTemplate($redirect, $client));
+                }
+            }
+
             // Keep track of which client instance is for, so we can fetch it in the callback
             Session::set('clientHandle', $clientHandle);
 
