@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.10 - 2026-02-07
+
+### Fixed
+- Fix a redirect error when connecting to a client in the control panel.
+- Fix an error when creating a new client.
+
 ## 2.0.9 - 2026-01-23
 
 ### Changed
