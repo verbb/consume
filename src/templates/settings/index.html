@@ -45,6 +45,16 @@
     }) }}
 </div>
 
+{{ forms.autosuggestField({
+    label: 'Redirect URI' | t('consume'),
+    instructions: 'Set the OAuth Redirect URI, if you need to change it from the default.' | t('consume'),
+    id: 'redirectUri',
+    name: 'redirectUri',
+    suggestEnvVars: true,
+    value: settings.redirectUri,
+    warning: macros.configWarning('redirectUri', 'consume'),
+}) }}
+
 {% endnamespace %}
 
 {% endblock %}

@@ -1,14 +1,16 @@
 <?php
 namespace verbb\consume\base;
 
+use verbb\consume\Consume;
+
 use Craft;
 use craft\helpers\ArrayHelper;
 use craft\helpers\StringHelper;
-use craft\helpers\UrlHelper;
 
 use verbb\auth\Auth;
 use verbb\auth\base\OAuthProviderInterface;
 use verbb\auth\base\OAuthProviderTrait;
+use verbb\auth\helpers\RedirectUri;
 use verbb\auth\models\Token;
 
 abstract class OAuthClient extends Client implements OAuthProviderInterface
@@ -71,14 +73,7 @@ abstract class OAuthClient extends Client implements OAuthProviderInterface
 
     public function getRedirectUri(): ?string
     {
-        $siteId = Craft::$app->getSites()->getCurrentSite()->id ?? Craft::$app->getSites()->getPrimarySite()->id;
-
-        // Check for Headless Mode and use the Action URL, or when `cpTrigger` is empty to signify split front/back-end
-        if (Craft::$app->getConfig()->getGeneral()->headlessMode || !Craft::$app->getConfig()->getGeneral()->cpTrigger) {
-            return UrlHelper::cpUrl('consume/auth/callback', null, null, $siteId);
-        }
-
-        return UrlHelper::siteUrl('consume/auth/callback', null, null, $siteId);
+        return RedirectUri::getCallbackUri(Consume::$plugin->getSettings()->redirectUri, 'consume/auth/callback');
     }
 
     public function getAuthorizationUrlOptions(): array

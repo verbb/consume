@@ -11,6 +11,7 @@ return [
         'pluginName' => 'Consume',
         'enableCache' => true,
         'cacheDuration' => 'PT1H',
+        'redirectUri' => null,
     ]
 ];
 ```
@@ -19,6 +20,14 @@ return [
 - `pluginName` - If you wish to customise the plugin name.
 - `enableCache` - Whether to enable the cache for data.
 - `cacheDuration` - When the cache is enabled, how long data is cached for. Accepts a [Date Interval](https://www.php.net/manual/en/dateinterval.construct.php) or a number of seconds.
+- `redirectUri` - Optionally override the OAuth redirect URI for detached or multi-domain setups. This applies to all OAuth clients.
+
+### Redirect URI Override
+By default, Consume will continue to use its legacy callback URI. If you need to use a different callback URI, such as for detached domains or an `/actions/...` callback, set `redirectUri` at the plugin level.
+
+```php
+'redirectUri' => 'https://craft.example.com/actions/consume/auth/callback',
+```
 
 ### Clients
 Supply your client configurations as per the below. The `key` for each item should be the client `handle`. Do note that this only allows overriding existing clients and their settings, and you can't define clients purely in the configuration file.

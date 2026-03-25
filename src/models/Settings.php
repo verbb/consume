@@ -11,5 +11,6 @@ class Settings extends Model
     public string $pluginName = 'Consume';
     public bool $enableCache = true;
     public mixed $cacheDuration = 'PT1H';
+    public ?string $redirectUri = null;
 
 }
