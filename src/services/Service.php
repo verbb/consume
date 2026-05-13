@@ -57,40 +57,59 @@ class Service extends Component
 
         $settings = Consume::$plugin->getSettings();
 
-        // Allow overriding cache/duration in templates
-        $enableCache = ArrayHelper::remove($clientOpts, 'enableCache', $settings->enableCache);
+        // `cacheDuration` / per-request `enableCache` live on the client opts (not Guzzle $options).
         $cacheDuration = ArrayHelper::remove($clientOpts, 'cacheDuration', $settings->cacheDuration);
 
-        // Only cache if we've requested it, and probably just for GET requests. Seems odd to cache POST/DELETE/PUT.
-        if ($enableCache && $method === 'GET') {
-            $seconds = ConfigHelper::durationInSeconds($cacheDuration);
-            $cacheTags = ['consume'];
+        // Per-request: whether to read from cache first. Default matches plugin `enableCache` when omitted.
+        $readFromCache = ArrayHelper::remove($clientOpts, 'enableCache', $settings->enableCache);
 
-            if (is_string($clientOpts)) {
-                $cacheTags[] = 'consume:' . $clientOpts;
-            }
+        // Plugin `enableCache` is the master switch: no cache reads or writes when disabled.
+        $pluginCacheEnabled = $settings->enableCache;
 
-            // Generate a cache key based on all the provided data and duration (in case we change it)
-            $cacheKey = md5(Json::encode([$clientOpts, $method, $uri, $options, $seconds]));
+        if (!$pluginCacheEnabled) {
+            $readFromCache = false;
+        }
 
+        // Only interact with Craft cache for GET; POST/PUT/DELETE are never cached here.
+        if ($method !== 'GET' || !$pluginCacheEnabled) {
+            return $this->fetchRawData($clientOpts, $method, $uri, $options);
+        }
+
+        $seconds = ConfigHelper::durationInSeconds($cacheDuration);
+        $cacheTags = ['consume'];
+
+        if (is_string($clientOpts)) {
+            $cacheTags[] = 'consume:' . $clientOpts;
+        }
+
+        $cacheKey = md5(Json::encode([$clientOpts, $method, $uri, $options, $seconds]));
+
+        $dependency = new TagDependency([
+            'tags' => $cacheTags,
+        ]);
+
+        if ($readFromCache) {
             $cacheData = Craft::$app->getCache()->getOrSet($cacheKey, function() use ($clientOpts, $method, $uri, $options) {
-                // Only set cache data if we have a result
                 if ($cacheData = $this->fetchRawData($clientOpts, $method, $uri, $options)) {
                     return $cacheData;
                 }
 
                 // Returning `false` ensures that the result is not cached, and evaluated next time
                 return false;
-            }, $seconds, new TagDependency([
-                // Allow us to tag the cache with the provider handle (and Consume in general) to make invalidating it easier when saving
-                // CP-based clients in the control panel when their settings change.
-                'tags' => $cacheTags,
-            ]));
+            }, $seconds, $dependency);
 
-            // Only return if we have a result
             if ($cacheData) {
                 return $cacheData;
             }
+        } else {
+            // Skip cache read (fresh fetch), but still warm the cache for other requests when the plugin has caching on.
+            $data = $this->fetchRawData($clientOpts, $method, $uri, $options);
+            
+            if ($data) {
+                Craft::$app->getCache()->set($cacheKey, $data, $seconds, $dependency);
+            }
+
+            return $data;
         }
 
         return $this->fetchRawData($clientOpts, $method, $uri, $options);
