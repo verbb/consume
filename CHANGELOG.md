@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.13 - 2026-05-14
+
+### Changed
+- Update `fetchData()` logic to set the cache data for requests.
+
 ## 2.0.12 - 2026-05-03
 
 ### Changed
