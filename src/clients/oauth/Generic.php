@@ -55,6 +55,8 @@ class Generic extends OAuthClient
 
     public function getOAuthProviderConfig(): array
     {
+        $this->normalizeScopes();
+
         $config = parent::getOAuthProviderConfig();
         $config['urlAuthorize'] = $this->getAuthorizationUrl();
         $config['urlAccessToken'] = $this->getTokenUrl();

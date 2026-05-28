@@ -4,7 +4,6 @@ namespace verbb\consume\base;
 use verbb\consume\Consume;
 
 use Craft;
-use craft\helpers\ArrayHelper;
 use craft\helpers\StringHelper;
 
 use verbb\auth\Auth;
@@ -55,6 +54,8 @@ abstract class OAuthClient extends Client implements OAuthProviderInterface
 
     public function getSettingsHtml(): ?string
     {
+        $this->normalizeScopes();
+
         $handle = StringHelper::toKebabCase(static::$providerHandle);
         $variables = $this->getSettingsHtmlVariables();
 
@@ -78,6 +79,8 @@ abstract class OAuthClient extends Client implements OAuthProviderInterface
 
     public function getAuthorizationUrlOptions(): array
     {
+        $this->normalizeScopes();
+
         // Create custom scopes with the provided scope separator, and still pass in as an array so that
         // they're merged with the default provider scopes as well.
         $scopes = implode($this->scopeSeparator, $this->scopes);
@@ -98,10 +101,7 @@ abstract class OAuthClient extends Client implements OAuthProviderInterface
 
     public function beforeSave(bool $isNew): bool
     {
-        // Normalise editable table values
-        if (isset($this->scopes[0])) {
-            $this->scopes = ArrayHelper::getColumn($this->scopes, 'scope');
-        }
+        $this->normalizeScopes();
 
         return parent::beforeSave($isNew);
     }
@@ -121,5 +121,22 @@ abstract class OAuthClient extends Client implements OAuthProviderInterface
         ];
 
         return $rules;
+    }
+
+    protected function normalizeScopes(): void
+    {
+        $scopes = [];
+
+        foreach ($this->scopes as $scope) {
+            if (is_array($scope)) {
+                $scope = $scope['scope'] ?? null;
+            }
+
+            if ($scope !== null && $scope !== '') {
+                $scopes[] = (string)$scope;
+            }
+        }
+
+        $this->scopes = $scopes;
     }
 }
