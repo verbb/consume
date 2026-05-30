@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.14 - 2026-05-30
+
+### Fixed
+- Fix an issue where client scopes aren’t normalized.
+
 ## 2.0.13 - 2026-05-14
 
 ### Changed
