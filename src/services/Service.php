@@ -202,7 +202,16 @@ class Service extends Component
             return $response;
         }
 
-        $body = (string)$response->getBody()->getContents();
+        // OAuth clients return already-parsed string content for non-JSON responses (e.g. images)
+        if (is_string($response)) {
+            return $response;
+        }
+
+        if ($format === 'raw') {
+            return $response;
+        }
+
+        $body = $response->getBody()->getContents();
 
         if ($format === 'json') {
             return Json::decode($body);
@@ -214,10 +223,6 @@ class Service extends Component
 
         if ($format === 'csv') {
             return (new CsvEncoder())->decode($body, 'csv');
-        }
-
-        if ($format === 'raw') {
-            return $response;
         }
 
         return $body;
