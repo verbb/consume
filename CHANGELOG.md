@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.15 - 2026-06-20
+
+### Fixed
+- Fix an issue where `format: 'raw'` would fail for OAuth client requests that return already-parsed string content.
+
 ## 2.0.14 - 2026-05-30
 
 ### Fixed
