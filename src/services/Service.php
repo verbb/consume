@@ -36,6 +36,13 @@ class Service extends Component
 
     public const EVENT_BEFORE_FETCH_DATA = 'beforeFetchData';
 
+    /**
+     * Request options that only affect Consume behaviour, not the underlying HTTP request or cached payload.
+     */
+    private const CONSUME_ONLY_OPTIONS = [
+        'includeErrorResponse',
+    ];
+
 
     // Public Methods
     // =========================================================================
@@ -82,7 +89,7 @@ class Service extends Component
             $cacheTags[] = 'consume:' . $clientOpts;
         }
 
-        $cacheKey = md5(Json::encode([$clientOpts, $method, $uri, $options, $seconds]));
+        $cacheKey = $this->_getCacheKey($clientOpts, $method, $uri, $options, $seconds);
 
         $dependency = new TagDependency([
             'tags' => $cacheTags,
@@ -194,6 +201,33 @@ class Service extends Component
 
     // Private Methods
     // =========================================================================
+
+    private function _getCacheKey(array|string $clientOpts, string $method, string $uri, array $options, int $seconds): string
+    {
+        return md5(Json::encode([
+            $this->_normalizeClientOptsForCacheKey($clientOpts),
+            $method,
+            $uri,
+            $this->_stripConsumeOnlyOptions($options),
+            $seconds,
+        ]));
+    }
+
+    private function _normalizeClientOptsForCacheKey(array|string $clientOpts): array
+    {
+        if (is_string($clientOpts)) {
+            return ['handle' => $clientOpts];
+        }
+
+        ksort($clientOpts);
+
+        return $clientOpts;
+    }
+
+    private function _stripConsumeOnlyOptions(array $options): array
+    {
+        return ArrayHelper::without($options, ...self::CONSUME_ONLY_OPTIONS);
+    }
 
     private function _parseResponse(string $format, mixed $response): mixed
     {
