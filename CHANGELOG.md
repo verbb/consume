@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.16 - 2026-07-15
+
+### Fixed
+- Fix cache keys differing for equivalent requests when using Consume-only options like `includeErrorResponse`, or when passing a client handle as a string vs an array.
+
 ## 2.0.15 - 2026-06-20
 
 ### Fixed
