@@ -13,4 +13,17 @@ class Settings extends Model
     public mixed $cacheDuration = 'PT1H';
     public ?string $redirectUri = null;
 
+
+    // Protected Methods
+    // =========================================================================
+
+    protected function defineRules(): array
+    {
+        $rules = parent::defineRules();
+
+        $rules[] = [['pluginName'], 'trim'];
+        $rules[] = [['pluginName'], 'required'];
+
+        return $rules;
+    }
 }
