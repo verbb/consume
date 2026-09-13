@@ -1,26 +1,53 @@
 # Configuration
-Create a `consume.php` file under your `/config` directory with the following options available to you. You can also use multi-environment options to change these per environment.
 
-The below shows the defaults already used by Consume, so you don't need to add these options unless you want to modify the values.
+You can customise Consume’s settings using a PHP configuration file. This is optional: each setting has a default, so you only need to include the values you want to change.
+
+To override a setting, create `consume.php` in your Craft project’s `/config` directory and return an array of setting names and values. For example, the following will change the name displayed in the control panel:
 
 ```php
 <?php
 
 return [
-    '*' => [
-        'pluginName' => 'Consume',
-        'enableCache' => true,
-        'cacheDuration' => 'PT1H',
-        'redirectUri' => null,
-    ]
+    'pluginName' => 'Consume Tools',
 ];
 ```
 
-## Configuration options
-- `pluginName` - If you wish to customise the plugin name.
-- `enableCache` - Whether to enable the cache for data.
-- `cacheDuration` - When the cache is enabled, how long data is cached for. Accepts a [Date Interval](https://www.php.net/manual/en/dateinterval.construct.php) or a number of seconds.
-- `redirectUri` - Optionally override the OAuth redirect URI for detached or multi-domain setups. This applies to all OAuth clients.
+All other settings keep their defaults. Add any further settings you want to change to the same array. The options below explain the available settings and their defaults.
+
+## Configuration Options
+
+::: reference
+### `pluginName`
+
+**Type:** `string` · **Default:** `'Consume'`
+
+The name displayed for the plugin in the control panel.
+:::
+
+::: reference
+### `enableCache`
+
+**Type:** `bool` · **Default:** `true`
+
+Whether to enable the cache for data.
+:::
+
+::: reference
+### `cacheDuration`
+
+**Type:** `mixed` · **Default:** `'PT1H'`
+
+When the cache is enabled, how long data is cached for. Accepts a [Date Interval](https://www.php.net/manual/en/dateinterval.construct.php) or a number of seconds.
+:::
+
+::: reference
+### `redirectUri`
+
+**Type:** `string|null` · **Default:** `null`
+
+Optionally override the OAuth redirect URI for detached or multi-domain setups. This applies to all OAuth clients.
+:::
+
 
 ### Redirect URI Override
 By default, Consume will continue to use its legacy callback URI. If you need to use a different callback URI, such as for detached domains or an `/actions/...` callback, set `redirectUri` at the plugin level.

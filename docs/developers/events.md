@@ -3,7 +3,7 @@ Consume provides a collection of events for extending its functionality. Modules
 
 ## Client Events
 
-### The `beforeSaveClient` event
+### The `beforeSaveClient` Event
 The event that is triggered before a client is saved.
 
 ```php
@@ -18,7 +18,7 @@ Event::on(Clients::class, Clients::EVENT_BEFORE_SAVE_CLIENT, function(ClientEven
 });
 ```
 
-### The `afterSaveClient` event
+### The `afterSaveClient` Event
 The event that is triggered after a client is saved.
 
 ```php
@@ -33,7 +33,7 @@ Event::on(Clients::class, Clients::EVENT_AFTER_SAVE_CLIENT, function(ClientEvent
 });
 ```
 
-### The `beforeDeleteClient` event
+### The `beforeDeleteClient` Event
 The event that is triggered before a client is deleted.
 
 ```php
@@ -47,7 +47,7 @@ Event::on(Clients::class, Clients::EVENT_BEFORE_DELETE_CLIENT, function(ClientEv
 });
 ```
 
-### The `afterDeleteClient` event
+### The `afterDeleteClient` Event
 The event that is triggered after a client is deleted.
 
 ```php

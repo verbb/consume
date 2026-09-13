@@ -27,7 +27,7 @@
         "title": "Template Guides",
         "collapsable": false,
         "children": [
-            "template-guides/available-variables",
+            "template-guides/selecting-a-client",
             "template-guides/fetching-data"
         ]
     },

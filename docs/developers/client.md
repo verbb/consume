@@ -1,23 +1,86 @@
 # Client
 Whenever you're dealing with an client in your template, you're actually working with a `Client` object.
 
-## Attributes
+<span id="attributes"></span>
 
-Attribute | Description
---- | ---
-`name` | The name of the client.
-`handle` | The handle of the client.
-`enabled` | Whether the client is enabled or not.
-`type` | The type of client this is (`oauth` or `credentials`).
-`primaryColor` | The primary brand color of the provider connected.
-`icon` | The SVG icon of the client provider connected.
-`providerName` | The name of the client provider connected.
+## Properties
+
+::: reference
+### `name`
+
+**Type:** `string|null`
+
+The name of the client.
+:::
+
+::: reference
+### `handle`
+
+**Type:** `string|null`
+
+The handle of the client.
+:::
+
+::: reference
+### `enabled`
+
+**Type:** `bool|null`
+
+Whether the client is enabled or not.
+:::
+
+::: reference
+### `type`
+
+**Type:** `string`
+
+The type of client this is (`oauth` or `credentials`).
+:::
+
+::: reference
+### `primaryColor`
+
+**Type:** `string|null`
+
+The primary brand color of the provider connected.
+:::
+
+::: reference
+### `icon`
+
+**Type:** `string|null`
+
+The SVG icon of the client provider connected.
+:::
+
+::: reference
+### `providerName`
+
+**Type:** `string`
+
+The name of the client provider connected.
+:::
+
 
 
 ## Methods
 
-Method | Description
---- | ---
-`isConfigured()` | Whether the client provider has been configured.
-`isConnected()` | Whether the client provider has been connected and has a token. (OAuth clients only).
-`getToken()` | The access token for a client provider. (OAuth clients only).
+::: reference
+### `isConfigured()`
+
+Whether the client provider has been configured.
+:::
+
+::: reference
+### `isConnected()`
+
+**Returns:** `bool`
+
+Whether the client provider has been connected and has a token. (OAuth clients only).
+:::
+
+::: reference
+### `getToken()`
+
+The access token for a client provider. (OAuth clients only).
+:::

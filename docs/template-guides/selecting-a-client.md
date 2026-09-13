@@ -1,5 +1,15 @@
-# Available Variables
-The following methods are available to call in your Twig templates:
+# Selecting a Client
+
+Choose the configured client for the API you want to call. Use its handle in templates so the lookup does not depend on a database ID. In this example, configure a client whose handle is `catalogue` first:
+
+```twig
+{% set client = craft.consume.getClientByHandle('catalogue') %}
+{% if client %}
+    {# Use this client with the Fetching Data guide. #}
+{% endif %}
+```
+
+## Calls Used in This Task
 
 ### `craft.consume.getAllClients()`
 Returns a collection of [Client](docs:developers/client) objects.

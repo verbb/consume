@@ -3,6 +3,34 @@ The core part of Consume is being able to fetch data from third party APIs or UR
 
 There are several methods to fetch data with. Let's assume you've created an OAuth or Credentials client in Consume's settings, which we'll use in the following examples.
 
+## Display a JSON Response
+
+For a complete first example, configure a Credentials client with the handle `catalogue` and the base URL of an API you control. Suppose its `products` endpoint returns this JSON:
+
+```json
+[{"name":"Studio Notebook"},{"name":"Sketch Pad"}]
+```
+
+In the page's Twig template, fetch that endpoint and display the returned names:
+
+```twig
+{% set products = craft.consume.fetchData('catalogue', 'GET', 'products') %}
+
+{% if products is not null %}
+    <ul>
+        {% for product in products %}
+            <li>{{ product.name }}</li>
+        {% else %}
+            <li>No products are available.</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>The catalogue is temporarily unavailable.</p>
+{% endif %}
+```
+
+This response shape is an example contract for your API, not a built-in Consume endpoint. Adapt the loop if your API wraps its records in a property such as `data`. Check the rendered names, then test the unavailable case on your development installation. Keep detailed errors in your development diagnostics rather than displaying credentials or raw responses to visitors.
+
 ## Fetching Client Data
 You can use the `craft.consume.fetchData()` function call to fetch data, providing the handle of the client you want to use.
 
@@ -18,7 +46,7 @@ The first parameter should be the handle of your client. You can also provide it
 ```twig
 {% set client = {
     handle: 'exampleClientHandle',
-    verify: false,
+    timeout: 10,
 } %}
 
 {% set data = craft.consume.fetchData(client) %}
@@ -81,7 +109,7 @@ Or, we might want to fetch some content from a URL
 ```twig
 {% set client = {
     base_uri: 'https://my-site.test/docs/example.json',
-    verify: false,
+    timeout: 10,
 } %}
 
 {% set data = craft.consume.fetchData(client, 'GET') %}

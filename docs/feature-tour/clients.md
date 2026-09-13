@@ -4,7 +4,7 @@ You can create either a **Credentials** or **OAuth** client in Consume, via the 
 :::tip
 You don't have to use clients if you just want to roll your own [Guzzle](https://docs.guzzlephp.org/en/stable/) client. Have a look at the [Requests](docs:template-guides/fetching-data) docs. 
 
-**However** you can't use OAuth-based clients in your templates. You'll need to create your own [Client](docs:developers/client-type).
+An on-demand client created entirely in Twig cannot perform OAuth setup. Create and connect an OAuth client in the control panel before using it from a template. For a custom provider implementation, see [Client Types](docs:developers/client-type).
 :::
 
 ## Credentials Client
@@ -30,7 +30,7 @@ Once created, you'll be able to call the client in your template to make request
 ## OAuth Client
 Similarly, an OAuth Client will provide the same thing - providing you a [Guzzle](https://docs.guzzlephp.org/en/stable/) client that's bootstrapped with all the authentication that goes with OAuth without you having to worry about it.
 
-You can either pick from one of the 80+ natively supported providers, or create your own **Generic** client.
+You can either pick from a supported provider, or create your own **Generic** client.
 
 A **Generic** client will require:
 
@@ -44,7 +44,7 @@ A **Generic** client will require:
 Ensure you provide all these details, then click the **Connect** button to initialize the OAuth handshake to authenticate you with the provider and fetch an access token. This access token will be saved for future requests.
 
 :::tip
-If the provider supports refresh access tokens, Consume will automatically refresh an expired access token. You can sit back and relax knowing you'll always have an authenticated client!
+If the provider supports refresh access tokens, Consume will automatically refresh an expired access token. A revoked connection or failed refresh still needs attention: reconnect the client and check its credentials when requests fail.
 :::
 
 Once created, you'll be able to call the client in your template to make requests with.

@@ -737,10 +737,10 @@ Follow the below steps to connect to the Mailchimp API.
 1. Copy the **Client Secret** from Mailchimp and paste in the **Client Secret** field in Consume.
 
 
-## Mail.ru
+## Mail.Ru
 Follow the below steps to connect to the Mail.ru API.
 
-### Connect to the Mail.ru API
+### Connect to the Mail.Ru API
 1. Go to <a href="https://o2.mail.ru/app" target="_blank">Mail.ru</a> and login to your account.
 1. Navigate to **Apps**.
 1. Click the **Create an application** button.
