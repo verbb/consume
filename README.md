@@ -39,6 +39,7 @@ Consume supports 80+ popular OAuth-based API providers for you to create clients
 - Etsy
 - Eventbrite
 - Facebook
+- FedEx
 - Fitbit
 - Foursquare
 - FreshBooks
