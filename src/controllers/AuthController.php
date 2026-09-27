@@ -136,7 +136,7 @@ class AuthController extends Controller
 
         Session::setNotice('consume', Craft::t('consume', '{provider} connected.', ['provider' => $client->providerName]), true);
 
-        return $this->redirect($this->getView()->renderObjectTemplate($redirect, $client));
+        return $this->redirect($redirect);
     }
 
     public function actionDisconnect(): ?Response
