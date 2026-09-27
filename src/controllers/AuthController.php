@@ -4,6 +4,7 @@ namespace verbb\consume\controllers;
 use verbb\consume\Consume;
 
 use Craft;
+use craft\elements\User;
 use craft\web\Controller;
 
 use yii\web\Response;
@@ -18,7 +19,7 @@ class AuthController extends Controller
     // Properties
     // =========================================================================
 
-    protected array|int|bool $allowAnonymous = ['connect', 'callback'];
+    protected array|int|bool $allowAnonymous = ['callback'];
 
 
     // Public Methods
@@ -36,6 +37,9 @@ class AuthController extends Controller
 
     public function actionConnect(): ?Response
     {
+        $this->requirePermission('accessPlugin-consume');
+        $this->requirePostRequest();
+
         $clientHandle = $this->request->getRequiredParam('client');
 
         try {
@@ -75,7 +79,7 @@ class AuthController extends Controller
             return $response;
         }
 
-        $oauth->claimCallback('consume');
+        $oauth->claimAuthorizedCallback('consume', fn(User $user): bool => $user->can('accessPlugin-consume'));
         
         // Get both the origin (failure) and redirect (success) URLs
         $origin = Session::get('origin');
@@ -137,6 +141,9 @@ class AuthController extends Controller
 
     public function actionDisconnect(): ?Response
     {
+        $this->requirePermission('accessPlugin-consume');
+        $this->requirePostRequest();
+
         $clientHandle = $this->request->getRequiredParam('client');
 
         if (!($client = Consume::$plugin->getClients()->getClientByHandle($clientHandle))) {
