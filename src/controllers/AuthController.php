@@ -43,17 +43,17 @@ class AuthController extends Controller
                 return $this->asFailure(Craft::t('consume', 'Unable to find client “{client}”.', ['client' => $clientHandle]));
             }
 
-            // Handle redirection correctly for CP-based requests, as we need to session-store it.
+            $context = [
+                'clientHandle' => $clientHandle,
+            ];
+
             if ($this->request->getIsCpRequest()) {
                 if ($redirect = $this->request->getValidatedBodyParam('redirect')) {
-                    Session::set('redirect', $this->getView()->renderObjectTemplate($redirect, $client));
+                    $context['redirect'] = $this->getView()->renderObjectTemplate($redirect, $client);
                 }
             }
 
-            // Keep track of which client instance is for, so we can fetch it in the callback
-            Session::set('clientHandle', $clientHandle);
-
-            return Auth::getInstance()->getOAuth()->connect('consume', $client);
+            return Auth::getInstance()->getOAuth()->connect('consume', $client, $client->id, $context);
         } catch (Throwable $e) {
             Consume::error('Unable to authorize connect “{client}”: “{message}” {file}:{line}. Trace: “{trace}”', [
                 'client' => $clientHandle,
@@ -69,8 +69,13 @@ class AuthController extends Controller
 
     public function actionCallback(): ?Response
     {
-        // Restore the session data that we saved before authorization redirection from the cache back to session
-        Session::restoreSession($this->request->getParam('state'));
+        $oauth = Auth::getInstance()->getOAuth();
+
+        if ($response = $oauth->prepareCallback('consume')) {
+            return $response;
+        }
+
+        $oauth->claimCallback('consume');
         
         // Get both the origin (failure) and redirect (success) URLs
         $origin = Session::get('origin');
@@ -91,7 +96,7 @@ class AuthController extends Controller
 
         try {
             // Fetch the access token from the client and create a Token for us to use
-            $token = Auth::getInstance()->getOAuth()->callback('consume', $client);
+            $token = $oauth->callback('consume', $client, $client->id);
 
             if (!$token) {
                 Session::setError('consume', Craft::t('consume', 'Unable to fetch token.'), true);
