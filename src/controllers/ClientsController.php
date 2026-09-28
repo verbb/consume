@@ -18,6 +18,18 @@ class ClientsController extends Controller
     // Public Methods
     // =========================================================================
 
+    public function beforeAction($action): bool
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        $this->requireCpRequest();
+        $this->requirePermission('accessPlugin-consume');
+
+        return true;
+    }
+
     public function actionIndex(): Response
     {
         $clients = Consume::$plugin->getClients()->getAllClients();
@@ -93,6 +105,7 @@ class ClientsController extends Controller
 
     public function actionRefreshSettings(): Response
     {
+        $this->requirePostRequest();
         $this->requireAcceptsJson();
 
         $clientsService = Consume::$plugin->getClients();

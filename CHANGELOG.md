@@ -6,6 +6,7 @@
 - Route plugin settings through the plugin’s authorized settings controller.
 
 ### Fixed
+- Fixed a high-severity authorization vulnerability.
 - Fixed OAuth callback transaction validation.
 - Fixed authorization for connecting and disconnecting OAuth clients.
 - Fixed OAuth callback redirects being evaluated as Twig templates.
