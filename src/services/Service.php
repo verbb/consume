@@ -4,30 +4,29 @@ namespace verbb\consume\services;
 use verbb\consume\Consume;
 use verbb\consume\base\OAuthClient;
 use verbb\consume\events\FetchEvent;
+use verbb\consume\helpers\ExceptionHelper;
 use verbb\consume\models\Settings;
 
 use Craft;
 use craft\base\Component;
 use craft\helpers\ArrayHelper;
-use craft\helpers\DateTimeHelper;
 use craft\helpers\ConfigHelper;
+use craft\helpers\DateTimeHelper;
 use craft\helpers\Json;
 use craft\helpers\UrlHelper;
+
+use yii\base\Event;
+use yii\caching\TagDependency;
 
 use DateTime;
 use DateTimeZone;
 use Exception;
 use Throwable;
 
-use yii\base\Event;
-use yii\caching\TagDependency;
-
 use GuzzleHttp\Exception\RequestException;
-
-use verbb\auth\helpers\UrlHelper as AuthUrlHelper;
-
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use verbb\auth\helpers\UrlHelper as AuthUrlHelper;
 
 class Service extends Component
 {
@@ -182,11 +181,9 @@ class Service extends Component
 
             return $this->_parseResponse($format, $response);
         } catch (Throwable $e) {
-            Consume::error('Unable to fetch data: “{message}” {file}:{line}. Trace: “{trace}”.', [
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString(),
+            Consume::error('Unable to fetch data for client “{client}” ({exception}).', [
+                'client' => $handle ?: 'on-demand',
+                'exception' => ExceptionHelper::getSafeSummary($e),
             ]);
 
             // Check if we want to return any errors rather than just return `null`

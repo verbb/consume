@@ -2,6 +2,7 @@
 namespace verbb\consume\base;
 
 use verbb\consume\Consume;
+use verbb\consume\helpers\ExceptionHelper;
 use verbb\consume\records\Client as ClientRecord;
 
 use Craft;
@@ -13,12 +14,10 @@ use craft\helpers\UrlHelper;
 use craft\validators\HandleValidator;
 use craft\validators\UniqueValidator;
 
-use verbb\auth\helpers\Provider as ProviderHelper;
-
 use DateTime;
 use Exception;
 
-use GuzzleHttp\Exception\RequestException;
+use verbb\auth\helpers\Provider as ProviderHelper;
 
 abstract class Client extends SavableComponent implements ClientInterface
 {
@@ -34,20 +33,12 @@ abstract class Client extends SavableComponent implements ClientInterface
 
     public static function apiError($client, $exception, $throwError = true): void
     {
-        $messageText = $exception->getMessage();
+        $message = Craft::t('consume', 'API request failed.');
 
-        // Check for Guzzle errors, which are truncated in the exception `getMessage()`.
-        if ($exception instanceof RequestException && $exception->getResponse()) {
-            $messageText = (string)$exception->getResponse()->getBody();
-        }
-
-        $message = Craft::t('consume', 'API error: “{message}” {file}:{line}', [
-            'message' => $messageText,
-            'file' => $exception->getFile(),
-            'line' => $exception->getLine(),
+        Consume::error('{client}: API request failed ({exception}).', [
+            'client' => $client->name,
+            'exception' => ExceptionHelper::getSafeSummary($exception),
         ]);
-
-        Consume::error($client->name . ': ' . $message);
 
         if ($throwError) {
             throw new Exception($message);

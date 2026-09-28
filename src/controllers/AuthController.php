@@ -2,6 +2,7 @@
 namespace verbb\consume\controllers;
 
 use verbb\consume\Consume;
+use verbb\consume\helpers\ExceptionHelper;
 
 use Craft;
 use craft\elements\User;
@@ -9,10 +10,10 @@ use craft\web\Controller;
 
 use yii\web\Response;
 
+use Throwable;
+
 use verbb\auth\Auth;
 use verbb\auth\helpers\Session;
-
-use Throwable;
 
 class AuthController extends Controller
 {
@@ -59,12 +60,9 @@ class AuthController extends Controller
 
             return Auth::getInstance()->getOAuth()->connect('consume', $client, $client->id, $context);
         } catch (Throwable $e) {
-            Consume::error('Unable to authorize connect “{client}”: “{message}” {file}:{line}. Trace: “{trace}”', [
+            Consume::error('Unable to authorize connect “{client}” ({exception}).', [
                 'client' => $clientHandle,
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString(),
+                'exception' => ExceptionHelper::getSafeSummary($e),
             ]);
 
             return $this->asFailure(Craft::t('consume', 'Unable to authorize connect “{client}”.', ['client' => $clientHandle]));
@@ -112,23 +110,15 @@ class AuthController extends Controller
             $token->reference = $client->id;
             Auth::getInstance()->getTokens()->upsertToken($token);
         } catch (Throwable $e) {
-            $error = Craft::t('consume', 'Unable to process callback for “{client}”: “{message}” {file}:{line}', [
+            $error = Craft::t('consume', 'Unable to process callback for “{client}”.', [
                 'client' => $clientHandle,
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
             ]);
 
-            // Log differently to file
-            Consume::error('Unable to process callback for “{client}”: “{message}” {file}:{line}. Trace: “{trace}”', [
+            Consume::error('Unable to process callback for “{client}” ({exception}).', [
                 'client' => $clientHandle,
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString(),
+                'exception' => ExceptionHelper::getSafeSummary($e),
             ]);
 
-            // Show the error detail in the CP
             Craft::$app->getSession()->setFlash('consume:callback-error', $error);
 
             return $this->redirect($origin);
