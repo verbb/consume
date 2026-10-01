@@ -5,5 +5,4 @@ use craft\base\SavableComponentInterface;
 
 interface ClientInterface extends SavableComponentInterface
 {
-
 }

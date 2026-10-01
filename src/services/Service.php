@@ -110,7 +110,7 @@ class Service extends Component
         } else {
             // Skip cache read (fresh fetch), but still warm the cache for other requests when the plugin has caching on.
             $data = $this->fetchRawData($clientOpts, $method, $uri, $options);
-            
+
             if ($data) {
                 Craft::$app->getCache()->set($cacheKey, $data, $seconds, $dependency);
             }
@@ -144,7 +144,7 @@ class Service extends Component
             // Normalize the Base URI if we provide a URI. Sometimes, we may provide the "Base URI" as
             // the full URL for the request which can throw an error if we add a trailing slash.
             // `baseUri` = `https://api.dev/v12/api.php`
-            // We might also provide a URI when needs a trialing slash to work properly with Guzzle, 
+            // We might also provide a URI when needs a trialing slash to work properly with Guzzle,
             // and according to their spec. This can be seen for some URLs like:
             // `baseUri` = `https://api.dev/v12.0`
             // `uri` = `test/endpoint`
@@ -155,7 +155,7 @@ class Service extends Component
                     $clientOpts['base_uri'] .= '/';
                 }
             }
-        
+
             if ($handle) {
                 if ($client = Consume::$plugin->getClients()->getClientByHandle($handle)) {
                     // Configure the client with any additional options passed in

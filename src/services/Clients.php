@@ -171,7 +171,7 @@ class Clients extends Component
 
                 $config['settings'] = array_merge($settings, $configOverrides);
             }
-        }                
+        }
 
         try {
             return ComponentHelper::createComponent($config, ClientInterface::class);
@@ -231,7 +231,7 @@ class Clients extends Component
     public function getClientByHandle(string $handle, bool $enabledOnly = false, bool $connectedOnly = false): ?ClientInterface
     {
         $client = $this->_clients()->firstWhere('handle', $handle, true);
-    
+
         if ($client && (($enabledOnly && !$client->enabled) || ($connectedOnly && !$client->isConnected()))) {
             return null;
         }

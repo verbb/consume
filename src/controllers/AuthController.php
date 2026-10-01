@@ -78,7 +78,7 @@ class AuthController extends Controller
         }
 
         $oauth->claimAuthorizedCallback('consume', fn(User $user): bool => $user->can('accessPlugin-consume'));
-        
+
         // Get both the origin (failure) and redirect (success) URLs
         $origin = Session::get('origin');
         $redirect = Session::get('redirect');

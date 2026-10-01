@@ -59,7 +59,7 @@ class ClientsController extends Controller
 
         if ($clientId) {
             $oldClient = $clientsService->getClientById($clientId);
-            
+
             if (!$oldClient) {
                 throw new BadRequestHttpException("Invalid client ID: $clientId");
             }
@@ -114,7 +114,7 @@ class ClientsController extends Controller
         $setting = $this->request->getRequiredBodyParam('setting');
 
         $client = $clientsService->getClientByHandle($clientHandle);
-        
+
         if (!$client) {
             throw new BadRequestHttpException("Invalid client: $clientHandle");
         }

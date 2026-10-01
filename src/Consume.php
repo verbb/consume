@@ -92,7 +92,7 @@ class Consume extends Plugin
 
     private function _registerTwigExtensions(): void
     {
-        Craft::$app->view->registerTwigExtension(new Extension);
+        Craft::$app->view->registerTwigExtension(new Extension());
     }
 
     private function _registerCpRoutes(): void

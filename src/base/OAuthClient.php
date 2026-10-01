@@ -36,7 +36,7 @@ abstract class OAuthClient extends Client implements OAuthProviderInterface
     // =========================================================================
 
     use OAuthProviderTrait;
-    
+
 
     // Public Methods
     // =========================================================================

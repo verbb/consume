@@ -46,7 +46,7 @@ class TokensController extends Controller
     {
         if (!$this->handle) {
             $this->stderr('You must specify a Consume client.' . PHP_EOL, Console::FG_RED);
-            
+
             return ExitCode::UNSPECIFIED_ERROR;
         }
 
@@ -54,18 +54,18 @@ class TokensController extends Controller
 
         if (!$client) {
             $this->stderr('Unable to find client for ' . $this->handle . '.' . PHP_EOL, Console::FG_RED);
-            
+
             return ExitCode::UNSPECIFIED_ERROR;
         }
 
         if (!$client->getOAuthProvider()->refreshToken($client->getToken(), true)) {
             $this->stderr('Unable to refresh token for ' . $this->handle . '.' . PHP_EOL, Console::FG_RED);
-            
+
             return ExitCode::UNSPECIFIED_ERROR;
         }
-        
+
         $this->stdout('Token refreshed.' . PHP_EOL, Console::FG_GREEN);
-        
+
         return ExitCode::OK;
     }
 }

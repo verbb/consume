@@ -10,5 +10,5 @@ class RegisterClientsEvent extends Event
 
     public ?array $credentials = [];
     public ?array $oauth = [];
-    
+
 }

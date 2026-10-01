@@ -48,5 +48,5 @@ class ConsumeVariable
     {
         return Consume::$plugin->getService()->fetchData($client, $method, $uri, $options);
     }
-    
+
 }
