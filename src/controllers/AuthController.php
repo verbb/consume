@@ -38,7 +38,7 @@ class AuthController extends Controller
 
     public function actionConnect(): ?Response
     {
-        $this->requirePermission('accessPlugin-consume');
+        $this->requireAdmin(false);
         $this->requirePostRequest();
 
         $clientHandle = $this->request->getRequiredParam('client');
@@ -77,7 +77,7 @@ class AuthController extends Controller
             return $response;
         }
 
-        $oauth->claimAuthorizedCallback('consume', fn(User $user): bool => $user->can('accessPlugin-consume'));
+        $oauth->claimAuthorizedCallback('consume', fn(User $user): bool => $user->admin);
 
         // Get both the origin (failure) and redirect (success) URLs
         $origin = Session::get('origin');
@@ -131,7 +131,7 @@ class AuthController extends Controller
 
     public function actionDisconnect(): ?Response
     {
-        $this->requirePermission('accessPlugin-consume');
+        $this->requireAdmin(false);
         $this->requirePostRequest();
 
         $clientHandle = $this->request->getRequiredParam('client');

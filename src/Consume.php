@@ -64,6 +64,10 @@ class Consume extends Plugin
 
     public function getCpNavItem(): ?array
     {
+        if (!Craft::$app->getUser()->getIsAdmin()) {
+            return null;
+        }
+
         $nav = parent::getCpNavItem();
         $nav['label'] = $this->getPluginName();
 

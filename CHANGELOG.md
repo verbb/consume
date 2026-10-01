@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+- Fixed a high-severity authorization vulnerability.
+
 ## 2.0.19 - 2026-09-30
 
 ### Changed

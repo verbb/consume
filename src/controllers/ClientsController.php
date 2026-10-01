@@ -25,7 +25,7 @@ class ClientsController extends Controller
         }
 
         $this->requireCpRequest();
-        $this->requirePermission('accessPlugin-consume');
+        $this->requireAdmin(false);
 
         return true;
     }
