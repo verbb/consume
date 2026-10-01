@@ -3,10 +3,13 @@ namespace verbb\consume\clients\oauth;
 
 use verbb\consume\base\OAuthClient;
 
+use Craft;
 use craft\helpers\App;
 
 use verbb\auth\Auth;
 use verbb\auth\providers\Zendesk as ZendeskProvider;
+
+use yii\base\InvalidConfigException;
 
 class Zendesk extends OAuthClient
 {
@@ -31,7 +34,13 @@ class Zendesk extends OAuthClient
 
     public function getSubdomain(): ?string
     {
-        return App::parseEnv($this->subdomain);
+        $subdomain = App::parseEnv($this->subdomain);
+
+        if ($subdomain !== null && !$this->isValidHostnameLabel($subdomain)) {
+            throw new InvalidConfigException(Craft::t('consume', 'Zendesk subdomain must resolve to a single valid hostname label.'));
+        }
+
+        return $subdomain;
     }
 
     public function getOAuthProviderConfig(): array
@@ -50,6 +59,11 @@ class Zendesk extends OAuthClient
     {
         $rules = parent::defineRules();
         $rules[] = [['subdomain'], 'required'];
+        $rules[] = [['subdomain'], function(string $attribute): void {
+            if (!$this->isValidHostnameLabel(App::parseEnv($this->$attribute))) {
+                $this->addError($attribute, Craft::t('consume', 'Subdomain must resolve to a single valid hostname label.'));
+            }
+        }];
 
         return $rules;
     }

@@ -28,6 +28,8 @@ use yii\caching\TagDependency;
 use Exception;
 use Throwable;
 
+use verbb\auth\Auth;
+
 class Clients extends Component
 {
     // Constants
@@ -271,6 +273,13 @@ class Clients extends Component
         $settings = $client->settings;
 
         $clientRecord = $this->_getClientRecordById($client->id);
+        $connectionChanged = false;
+
+        if (!$isNewClient) {
+            $storedClient = $this->createClient($clientRecord->toArray());
+            $connectionChanged = $clientRecord->type !== get_class($client) || $storedClient->settings !== $settings;
+        }
+
         $clientRecord->name = $client->name;
         $clientRecord->handle = $client->handle;
         $clientRecord->enabled = $client->enabled;
@@ -285,7 +294,25 @@ class Clients extends Component
             $clientRecord->sortOrder = $maxSortOrder ? $maxSortOrder + 1 : 1;
         }
 
-        $clientRecord->save(false);
+        $transaction = $connectionChanged ? Craft::$app->getDb()->beginTransaction() : null;
+
+        try {
+            if (!$clientRecord->save(false)) {
+                $transaction?->rollBack();
+
+                return false;
+            }
+
+            if ($connectionChanged) {
+                Auth::getInstance()->getTokens()->deleteTokenByOwnerReference('consume', (string)$client->id);
+            }
+
+            $transaction?->commit();
+        } catch (Throwable $e) {
+            $transaction?->rollBack();
+
+            throw $e;
+        }
 
         if (!$client->id) {
             $client->id = $clientRecord->id;

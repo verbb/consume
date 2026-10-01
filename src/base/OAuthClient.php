@@ -93,7 +93,11 @@ abstract class OAuthClient extends Client implements OAuthProviderInterface
     public function getToken(): ?Token
     {
         if ($this->id) {
-            return Auth::getInstance()->getTokens()->getTokenByOwnerReference('consume', $this->id);
+            $token = Auth::getInstance()->getTokens()->getTokenByOwnerReference('consume', $this->id);
+
+            if ($token?->providerType === static::class) {
+                return $token;
+            }
         }
 
         return null;
@@ -138,5 +142,10 @@ abstract class OAuthClient extends Client implements OAuthProviderInterface
         }
 
         $this->scopes = $scopes;
+    }
+
+    protected function isValidHostnameLabel(mixed $value): bool
+    {
+        return is_string($value) && preg_match('/\A[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\z/i', $value) === 1;
     }
 }

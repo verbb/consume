@@ -4,6 +4,8 @@
 
 ### Fixed
 - Fixed a high-severity authorization vulnerability.
+- Invalidate saved OAuth tokens when client connection settings change.
+- Validate Zendesk subdomains and Vend store names before constructing OAuth endpoints.
 
 ## 2.0.19 - 2026-09-30
 
