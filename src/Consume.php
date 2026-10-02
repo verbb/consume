@@ -3,8 +3,8 @@ namespace verbb\consume;
 
 use verbb\consume\base\PluginTrait;
 use verbb\consume\models\Settings;
-use verbb\consume\twigextensions\Extension;
 use verbb\consume\variables\ConsumeVariable;
+use verbb\consume\web\twig\Extension;
 
 use Craft;
 use craft\base\Plugin;

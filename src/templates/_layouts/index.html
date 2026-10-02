@@ -1,6 +1,6 @@
 {% extends parentLayout ?? '_layouts/cp' %}
 
-{% do view.registerAssetBundle('verbb\\consume\\assetbundles\\ConsumeAsset') %}
+{% do view.registerAssetBundle('verbb\\consume\\web\\assets\\cp\\ConsumeAsset') %}
 
 {% if title is not defined %}
     {% set title = 'Consume' | t('consume') %}

@@ -1,10 +1,10 @@
 <?php
-namespace verbb\consume\assetbundles;
+namespace verbb\consume\web\assets\cp;
 
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
 
-use verbb\base\assetbundles\CpAsset as VerbbCpAsset;
+use verbb\base\web\assets\cp\CpAsset as VerbbCpAsset;
 
 class ConsumeAsset extends AssetBundle
 {
@@ -13,7 +13,7 @@ class ConsumeAsset extends AssetBundle
 
     public function init(): void
     {
-        $this->sourcePath = "@verbb/consume/resources/dist";
+        $this->sourcePath = '@verbb/consume/web/assets/cp/dist';
 
         $this->depends = [
             VerbbCpAsset::class,
@@ -21,11 +21,7 @@ class ConsumeAsset extends AssetBundle
         ];
 
         $this->css = [
-            'css/consume.css',
-        ];
-
-        $this->js = [
-            'js/consume.js',
+            'consume.css',
         ];
 
         parent::init();

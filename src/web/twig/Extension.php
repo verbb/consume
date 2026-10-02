@@ -1,9 +1,7 @@
 <?php
-namespace verbb\consume\twigextensions;
+namespace verbb\consume\web\twig;
 
 use verbb\consume\Consume;
-
-use Craft;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
