@@ -232,9 +232,21 @@ class Clients extends Component
 
     public function getClientByHandle(string $handle, bool $enabledOnly = false, bool $connectedOnly = false): ?ClientInterface
     {
-        $client = $this->_clients()->firstWhere('handle', $handle, true);
+        if ($enabledOnly) {
+            $client = $this->getClientByParams([
+                'handle' => $handle,
+                'enabled' => true,
+            ]);
 
-        if ($client && (($enabledOnly && !$client->enabled) || ($connectedOnly && !$client->isConnected()))) {
+            // Preserve the case-sensitive handle matching used by the memoized collection.
+            if ($client && $client->handle !== $handle) {
+                return null;
+            }
+        } else {
+            $client = $this->_clients()->firstWhere('handle', $handle, true);
+        }
+
+        if ($client && $connectedOnly && !$client->isConnected()) {
             return null;
         }
 
@@ -317,6 +329,8 @@ class Clients extends Component
         if (!$client->id) {
             $client->id = $clientRecord->id;
         }
+
+        $this->_clients = null;
 
         $client->afterSave($isNewClient);
 

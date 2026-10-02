@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+- Fixed a vulnerability affecting disabled client enforcement.
+
 ## 2.0.20 - 2026-10-02
 
 ### Changed

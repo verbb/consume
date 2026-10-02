@@ -157,22 +157,26 @@ class Service extends Component
             }
 
             if ($handle) {
-                if ($client = Consume::$plugin->getClients()->getClientByHandle($handle)) {
-                    // Configure the client with any additional options passed in
-                    $client->setProviderOptions($clientOpts);
+                $client = Consume::$plugin->getClients()->getClientByHandle($handle, enabledOnly: true);
 
-                    if ($client instanceof OAuthClient) {
-                        // Provide a nicer error message when token is missing
-                        if (!$client->getToken()) {
-                            throw new Exception('Client token missing, please ensure the client is connected.');
-                        }
-                    }
-
-                    // Make an authenticated request, either OAuth-based, or Guzzle
-                    $response = $client->request($method, $uri, $options);
-
-                    return $this->_parseResponse($format, $response);
+                if (!$client) {
+                    throw new Exception('Client missing or disabled.');
                 }
+
+                // Configure the client with any additional options passed in
+                $client->setProviderOptions($clientOpts);
+
+                if ($client instanceof OAuthClient) {
+                    // Provide a nicer error message when token is missing
+                    if (!$client->getToken()) {
+                        throw new Exception('Client token missing, please ensure the client is connected.');
+                    }
+                }
+
+                // Make an authenticated request, either OAuth-based, or Guzzle
+                $response = $client->request($method, $uri, $options);
+
+                return $this->_parseResponse($format, $response);
             }
 
             $client = Craft::createGuzzleClient($clientOpts);
