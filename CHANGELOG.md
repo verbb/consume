@@ -4,6 +4,7 @@
 
 ### Fixed
 - Fixed a vulnerability affecting disabled client enforcement.
+- Fixed a vulnerability affecting cached client response lifecycle.
 
 ## 2.0.20 - 2026-10-02
 

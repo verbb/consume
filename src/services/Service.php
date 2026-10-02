@@ -35,6 +35,8 @@ class Service extends Component
 
     public const EVENT_BEFORE_FETCH_DATA = 'beforeFetchData';
 
+    private const CACHE_KEY_VERSION = 2;
+
     /**
      * Request options that only affect Consume behaviour, not the underlying HTTP request or cached payload.
      */
@@ -83,19 +85,26 @@ class Service extends Component
 
         $seconds = ConfigHelper::durationInSeconds($cacheDuration);
         $cacheTags = ['consume'];
+        $clientHandle = is_string($clientOpts) ? $clientOpts : ($clientOpts['handle'] ?? null);
 
-        if (is_string($clientOpts)) {
-            $cacheTags[] = 'consume:' . $clientOpts;
+        if (is_string($clientHandle) && $clientHandle !== '') {
+            $cacheTags[] = 'consume:' . $clientHandle;
         }
 
         $cacheKey = $this->_getCacheKey($clientOpts, $method, $uri, $options, $seconds);
+        $cache = Craft::$app->getCache();
 
         $dependency = new TagDependency([
             'tags' => $cacheTags,
+            'reusable' => true,
         ]);
 
+        // Snapshot the tag state before fetching so an in-flight request cannot repopulate
+        // a client cache after that client has been invalidated.
+        $dependency->evaluateDependency($cache);
+
         if ($readFromCache) {
-            $cacheData = Craft::$app->getCache()->getOrSet($cacheKey, function() use ($clientOpts, $method, $uri, $options) {
+            $cacheData = $cache->getOrSet($cacheKey, function() use ($clientOpts, $method, $uri, $options) {
                 if ($cacheData = $this->fetchRawData($clientOpts, $method, $uri, $options)) {
                     return $cacheData;
                 }
@@ -112,7 +121,7 @@ class Service extends Component
             $data = $this->fetchRawData($clientOpts, $method, $uri, $options);
 
             if ($data) {
-                Craft::$app->getCache()->set($cacheKey, $data, $seconds, $dependency);
+                $cache->set($cacheKey, $data, $seconds, $dependency);
             }
 
             return $data;
@@ -206,6 +215,7 @@ class Service extends Component
     private function _getCacheKey(array|string $clientOpts, string $method, string $uri, array $options, int $seconds): string
     {
         return md5(Json::encode([
+            self::CACHE_KEY_VERSION,
             $this->_normalizeClientOptsForCacheKey($clientOpts),
             $method,
             $uri,

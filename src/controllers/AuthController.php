@@ -109,6 +109,7 @@ class AuthController extends Controller
             // Save the token to the Auth plugin, with a reference to this client
             $token->reference = $client->id;
             Auth::getInstance()->getTokens()->upsertToken($token);
+            Consume::$plugin->getClients()->invalidateClientCaches($client->handle);
         } catch (Throwable $e) {
             $error = Craft::t('consume', 'Unable to process callback for “{client}”.', [
                 'client' => $clientHandle,
@@ -142,6 +143,7 @@ class AuthController extends Controller
 
         // Delete all tokens for this client
         Auth::getInstance()->getTokens()->deleteTokenByOwnerReference('consume', $client->id);
+        Consume::$plugin->getClients()->invalidateClientCaches($client->handle);
 
         return $this->asModelSuccess($client, Craft::t('consume', '{provider} disconnected.', ['provider' => $client->providerName]), 'client');
     }

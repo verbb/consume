@@ -286,10 +286,12 @@ class Clients extends Component
 
         $clientRecord = $this->_getClientRecordById($client->id);
         $connectionChanged = false;
+        $previousHandle = null;
 
         if (!$isNewClient) {
             $storedClient = $this->createClient($clientRecord->toArray());
             $connectionChanged = $clientRecord->type !== get_class($client) || $storedClient->settings !== $settings;
+            $previousHandle = $clientRecord->handle;
         }
 
         $clientRecord->name = $client->name;
@@ -331,10 +333,9 @@ class Clients extends Component
         }
 
         $this->_clients = null;
+        $this->invalidateClientCaches($previousHandle, $client->handle);
 
         $client->afterSave($isNewClient);
-
-        TagDependency::invalidate(Craft::$app->getCache(), ['consume:' . $client->handle]);
 
         // Fire an 'afterSaveClient' event
         if ($this->hasEventHandlers(self::EVENT_AFTER_SAVE_CLIENT)) {
@@ -345,6 +346,21 @@ class Clients extends Component
         }
 
         return true;
+    }
+
+    public function invalidateClientCaches(?string ...$handles): void
+    {
+        $tags = [];
+
+        foreach (array_unique($handles) as $handle) {
+            if ($handle !== null && $handle !== '') {
+                $tags[] = 'consume:' . $handle;
+            }
+        }
+
+        if ($tags) {
+            TagDependency::invalidate(Craft::$app->getCache(), $tags);
+        }
     }
 
     public function reorderClients(array $clientIds): bool
@@ -399,15 +415,16 @@ class Clients extends Component
 
         Db::delete('{{%consume_clients}}', ['id' => $client->id]);
 
+        // Stop deleted clients from remaining available through memoized or response caches.
+        $this->_clients = null;
+        $this->invalidateClientCaches($client->handle);
+
         // Fire an 'afterDeleteClient' event
         if ($this->hasEventHandlers(self::EVENT_AFTER_DELETE_CLIENT)) {
             $this->trigger(self::EVENT_AFTER_DELETE_CLIENT, new ClientEvent([
                 'client' => $client,
             ]));
         }
-
-        // Clear caches
-        $this->_clients = null;
 
         return true;
     }
