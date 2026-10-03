@@ -2,15 +2,23 @@
 namespace verbb\consume\base;
 
 use verbb\consume\Consume;
+use verbb\consume\helpers\ResponseLimiter;
 
 use Craft;
 use craft\helpers\StringHelper;
+
+use Exception;
 
 use verbb\auth\Auth;
 use verbb\auth\base\OAuthProviderInterface;
 use verbb\auth\base\OAuthProviderTrait;
 use verbb\auth\helpers\RedirectUri;
 use verbb\auth\models\Token;
+
+use League\OAuth1\Client\Server\Server as OAuth1Provider;
+use League\OAuth2\Client\Provider\AbstractProvider as OAuth2Provider;
+
+use GuzzleHttp\Client as GuzzleClient;
 
 abstract class OAuthClient extends Client implements OAuthProviderInterface
 {
@@ -35,11 +43,40 @@ abstract class OAuthClient extends Client implements OAuthProviderInterface
     // Traits
     // =========================================================================
 
-    use OAuthProviderTrait;
+    use OAuthProviderTrait {
+        getClient as private _getClient;
+        getOAuthProvider as private _getOAuthProvider;
+    }
 
 
     // Public Methods
     // =========================================================================
+
+    public function getOAuthProvider(): OAuth1Provider|OAuth2Provider
+    {
+        $provider = $this->_getOAuthProvider();
+
+        // League's OAuth 1 client creates its own HTTP client for each handshake request,
+        // which prevents Consume from enforcing the response boundary.
+        if ($provider instanceof OAuth1Provider) {
+            throw new Exception('OAuth 1 providers are not supported.');
+        }
+
+        $provider->setHttpClient(ResponseLimiter::withClient(
+            $provider->getHttpClient(),
+            Consume::$plugin->getSettings()->maxResponseBytes,
+        ));
+
+        return $provider;
+    }
+
+    public function getClient(): GuzzleClient
+    {
+        return ResponseLimiter::withClient(
+            $this->_getClient(),
+            Consume::$plugin->getSettings()->maxResponseBytes,
+        );
+    }
 
     public function settingsAttributes(): array
     {

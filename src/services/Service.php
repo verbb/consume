@@ -5,6 +5,7 @@ use verbb\consume\Consume;
 use verbb\consume\base\OAuthClient;
 use verbb\consume\events\FetchEvent;
 use verbb\consume\helpers\ExceptionHelper;
+use verbb\consume\helpers\ResponseLimiter;
 use verbb\consume\models\Settings;
 
 use Craft;
@@ -24,6 +25,7 @@ use Exception;
 use Throwable;
 
 use GuzzleHttp\Exception\RequestException;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use verbb\auth\helpers\UrlHelper as AuthUrlHelper;
@@ -35,7 +37,7 @@ class Service extends Component
 
     public const EVENT_BEFORE_FETCH_DATA = 'beforeFetchData';
 
-    private const CACHE_KEY_VERSION = 2;
+    private const CACHE_KEY_VERSION = 3;
 
     /**
      * Request options that only affect Consume behaviour, not the underlying HTTP request or cached payload.
@@ -91,7 +93,7 @@ class Service extends Component
             $cacheTags[] = 'consume:' . $clientHandle;
         }
 
-        $cacheKey = $this->_getCacheKey($clientOpts, $method, $uri, $options, $seconds);
+        $cacheKey = $this->_getCacheKey($clientOpts, $method, $uri, $options, $seconds, $settings->maxResponseBytes);
         $cache = Craft::$app->getCache();
 
         $dependency = new TagDependency([
@@ -188,7 +190,10 @@ class Service extends Component
                 return $this->_parseResponse($format, $response);
             }
 
-            $client = Craft::createGuzzleClient($clientOpts);
+            $client = ResponseLimiter::withClient(
+                Craft::createGuzzleClient($clientOpts),
+                Consume::$plugin->getSettings()->maxResponseBytes,
+            );
 
             $response = $client->request($method, $uri, $options);
 
@@ -200,7 +205,7 @@ class Service extends Component
             ]);
 
             // Check if we want to return any errors rather than just return `null`
-            if ($e instanceof RequestException && $includeErrorResponse) {
+            if ($e instanceof RequestException && $includeErrorResponse && !ResponseLimiter::isResponseTooLarge($e)) {
                 return ['error' => $this->_parseResponse($format, $e->getResponse())];
             }
         }
@@ -212,7 +217,7 @@ class Service extends Component
     // Private Methods
     // =========================================================================
 
-    private function _getCacheKey(array|string $clientOpts, string $method, string $uri, array $options, int $seconds): string
+    private function _getCacheKey(array|string $clientOpts, string $method, string $uri, array $options, int $seconds, int $maximumBytes): string
     {
         return md5(Json::encode([
             self::CACHE_KEY_VERSION,
@@ -221,6 +226,7 @@ class Service extends Component
             $uri,
             $this->_stripConsumeOnlyOptions($options),
             $seconds,
+            $maximumBytes,
         ]));
     }
 
@@ -250,6 +256,10 @@ class Service extends Component
         // OAuth clients return already-parsed string content for non-JSON responses (e.g. images)
         if (is_string($response)) {
             return $response;
+        }
+
+        if ($response instanceof ResponseInterface) {
+            $response = ResponseLimiter::limitResponse($response, Consume::$plugin->getSettings()->maxResponseBytes);
         }
 
         if ($format === 'raw') {

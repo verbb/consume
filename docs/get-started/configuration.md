@@ -41,6 +41,14 @@ When the cache is enabled, how long data is cached for. Accepts a [Date Interval
 :::
 
 ::: reference
+### `maxResponseBytes`
+
+**Type:** `int` · **Default:** `10485760`
+
+The maximum response body size Consume will accept, in bytes. Responses over the limit are rejected rather than truncated. Increase this value only when an API intentionally returns larger responses.
+:::
+
+::: reference
 ### `redirectUri`
 
 **Type:** `string|null` · **Default:** `null`

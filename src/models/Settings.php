@@ -1,6 +1,8 @@
 <?php
 namespace verbb\consume\models;
 
+use verbb\consume\helpers\ResponseLimiter;
+
 use craft\base\Model;
 
 class Settings extends Model
@@ -11,6 +13,7 @@ class Settings extends Model
     public string $pluginName = 'Consume';
     public bool $enableCache = true;
     public mixed $cacheDuration = 'PT1H';
+    public int $maxResponseBytes = ResponseLimiter::DEFAULT_MAX_BYTES;
     public ?string $redirectUri = null;
 
 
@@ -23,6 +26,7 @@ class Settings extends Model
 
         $rules[] = [['pluginName'], 'trim'];
         $rules[] = [['pluginName'], 'required'];
+        $rules[] = [['maxResponseBytes'], 'integer', 'min' => 1];
 
         return $rules;
     }

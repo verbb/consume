@@ -2,9 +2,13 @@
 
 ## Unreleased
 
+### Changed
+- Reject custom OAuth 1 clients that cannot enforce response size limits.
+
 ### Fixed
 - Fixed a vulnerability affecting disabled client enforcement.
 - Fixed a vulnerability affecting cached client response lifecycle.
+- Fixed a vulnerability affecting upstream response handling.
 
 ## 2.0.20 - 2026-10-02
 

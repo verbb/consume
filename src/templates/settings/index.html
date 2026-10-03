@@ -43,6 +43,20 @@
         }) }}
     </div>
 
+    {{ forms.textField({
+        label: 'Maximum Response Size' | t('consume'),
+        instructions: 'The maximum response body size Consume will accept, in bytes. Larger responses are rejected rather than truncated.' | t('consume'),
+        id: 'maxResponseBytes',
+        name: 'maxResponseBytes',
+        type: 'number',
+        min: 1,
+        step: 1,
+        value: settings.maxResponseBytes,
+        required: true,
+        errors: settings.getErrors('maxResponseBytes'),
+        warning: macros.configWarning('maxResponseBytes', 'consume'),
+    }) }}
+
     {{ forms.autosuggestField({
         label: 'Redirect URI' | t('consume'),
         instructions: 'Set the OAuth Redirect URI, if you need to change it from the default.' | t('consume'),

@@ -1,11 +1,16 @@
 <?php
 namespace verbb\consume\base;
 
+use verbb\consume\Consume;
+use verbb\consume\helpers\ResponseLimiter;
+
 use Craft;
 use craft\helpers\StringHelper;
 
 use verbb\auth\base\CredentialsProviderInterface;
 use verbb\auth\base\CredentialsProviderTrait;
+
+use GuzzleHttp\Client as GuzzleClient;
 
 abstract class CredentialsClient extends Client implements CredentialsProviderInterface
 {
@@ -28,11 +33,21 @@ abstract class CredentialsClient extends Client implements CredentialsProviderIn
     // Traits
     // =========================================================================
 
-    use CredentialsProviderTrait;
+    use CredentialsProviderTrait {
+        getCredentialsProvider as private _getCredentialsProvider;
+    }
 
 
     // Public Methods
     // =========================================================================
+
+    public function getCredentialsProvider(): GuzzleClient
+    {
+        return ResponseLimiter::withClient(
+            $this->_getCredentialsProvider(),
+            Consume::$plugin->getSettings()->maxResponseBytes,
+        );
+    }
 
     public function getSettingsHtml(): ?string
     {

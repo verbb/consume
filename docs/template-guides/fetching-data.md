@@ -1,6 +1,8 @@
 # Fetching Data
 The core part of Consume is being able to fetch data from third party APIs or URL endpoints that you supply. Consume takes care of the authentication side of things with OAuth-based clients, HTTP Basic Auth, API Keys, or HTTP Headers - providing you a HTTP client to make requests with. Because both OAuth and Credentials clients are similar, the way to fetch data for either will be exactly the same.
 
+Consume supports OAuth 2 clients. OAuth 1 client types are not supported.
+
 There are several methods to fetch data with. Let's assume you've created an OAuth or Credentials client in Consume's settings, which we'll use in the following examples.
 
 ## Display a JSON Response
@@ -115,7 +117,7 @@ Or, we might want to fetch some content from a URL
 {% set data = craft.consume.fetchData(client, 'GET') %}
 ```
 
-Don't forget that the first parameter of these function can be any of the [Guzzle Client](https://docs.guzzlephp.org/en/stable/quickstart.html#creating-a-client) options, along with the same method signature for a [Request](https://docs.guzzlephp.org/en/stable/request-options.html).
+The first parameter can contain [Guzzle Client](https://docs.guzzlephp.org/en/stable/quickstart.html#creating-a-client) options, along with the same method signature for a [Request](https://docs.guzzlephp.org/en/stable/request-options.html). Consume buffers responses so it can enforce the configured maximum response size, so `stream: true` is not retained. Standard `sink` and `on_headers` request options are supported, but low-level cURL response-output options are not. If an oversized response is rejected while using a caller-owned sink, the sink may contain data up to the configured limit.
 
 ## Data Types
 Your endpoint might not return JSON, which is traditionally the common data type returned from APIs. Consume will support you enforcing JSON, XML, CSV or HTML (raw data) on the data returned with fetching. For each data type, Consume will convert the content to an array for you to iterate over in your Twig templates.
