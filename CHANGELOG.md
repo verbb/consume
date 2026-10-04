@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.0.21 - 2026-10-05
 
 ### Changed
 - Reject custom OAuth 1 clients that cannot enforce response size limits.
