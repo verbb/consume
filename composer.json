@@ -2,7 +2,7 @@
     "name": "verbb/consume",
     "description": "A Craft CMS plugin for making HTTP requests from Twig and consuming JSON, XML or CSV.",
     "type": "craft-plugin",
-    "version": "2.0.21",
+    "version": "2.0.22",
     "keywords": [
         "craft",
         "cms",
