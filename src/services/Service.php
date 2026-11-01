@@ -118,7 +118,9 @@ class Service extends Component
         $dependency->evaluateDependency($cache);
 
         if ($readFromCache) {
-            $cacheData = $cache->getOrSet($cacheKey, function() use ($clientOpts, $method, $uri, $options) {
+            $fetchedData = null;
+
+            $cacheData = $cache->getOrSet($cacheKey, function() use ($clientOpts, $method, $uri, $options, &$fetchedData) {
                 $fetchedData = $this->fetchRawData($clientOpts, $method, $uri, $options);
 
                 if ($fetchedData && !$this->_lastFetchFailed) {
@@ -143,7 +145,7 @@ class Service extends Component
             return $data;
         }
 
-        return $this->fetchRawData($clientOpts, $method, $uri, $options);
+        return $fetchedData;
     }
 
     public function fetchRawData(array|string $clientOpts, string $method = '', string $uri = '', array $options = []): mixed

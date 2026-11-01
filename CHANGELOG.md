@@ -6,6 +6,7 @@
 - Fixed saving a client with a handle that is already in use throwing a database error instead of showing a validation error.
 - Fixed changes made by `beforeFetchData` event handlers to the client options, method, URI or request options being ignored.
 - Fixed error responses from `includeErrorResponse` being cached and returned to later requests for the same data.
+- Fixed failed GET requests being sent twice when caching is enabled.
 
 ## 2.0.23 - 2026-10-22
 
