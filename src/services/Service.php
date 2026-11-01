@@ -47,6 +47,12 @@ class Service extends Component
     ];
 
 
+    // Properties
+    // =========================================================================
+
+    private bool $_lastFetchFailed = false;
+
+
     // Public Methods
     // =========================================================================
 
@@ -113,8 +119,10 @@ class Service extends Component
 
         if ($readFromCache) {
             $cacheData = $cache->getOrSet($cacheKey, function() use ($clientOpts, $method, $uri, $options) {
-                if ($cacheData = $this->fetchRawData($clientOpts, $method, $uri, $options)) {
-                    return $cacheData;
+                $fetchedData = $this->fetchRawData($clientOpts, $method, $uri, $options);
+
+                if ($fetchedData && !$this->_lastFetchFailed) {
+                    return $fetchedData;
                 }
 
                 // Returning `false` ensures that the result is not cached, and evaluated next time
@@ -128,7 +136,7 @@ class Service extends Component
             // Skip cache read (fresh fetch), but still warm the cache for other requests when the plugin has caching on.
             $data = $this->fetchRawData($clientOpts, $method, $uri, $options);
 
-            if ($data) {
+            if ($data && !$this->_lastFetchFailed) {
                 $cache->set($cacheKey, $data, $seconds, $dependency);
             }
 
@@ -140,6 +148,8 @@ class Service extends Component
 
     public function fetchRawData(array|string $clientOpts, string $method = '', string $uri = '', array $options = []): mixed
     {
+        $this->_lastFetchFailed = false;
+
         try {
             // Check if we're dealing with a predefined client, either the handle of the client, or an object
             // with the handle, including extra client-based settings like headers, URL, format, etc
@@ -205,6 +215,8 @@ class Service extends Component
 
             return $this->_parseResponse($format, $response);
         } catch (Throwable $e) {
+            $this->_lastFetchFailed = true;
+
             Consume::error('Unable to fetch data for client “{client}” ({exception}).', [
                 'client' => $handle ?: 'on-demand',
                 'exception' => ExceptionHelper::getSafeSummary($e),
