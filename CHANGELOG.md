@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.0.24 - 2026-11-01
 
 ### Fixed
 - Fixed saving a client with a handle that is already in use throwing a database error instead of showing a validation error.
