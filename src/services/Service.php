@@ -65,6 +65,12 @@ class Service extends Component
             return $event->response;
         }
 
+        // Use any request changes made by event handlers
+        $clientOpts = $event->clientOpts;
+        $method = $event->method;
+        $uri = $event->uri;
+        $options = $event->options;
+
         $settings = Consume::$plugin->getSettings();
 
         // `cacheDuration` / per-request `enableCache` live on the client opts (not Guzzle $options).
