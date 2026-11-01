@@ -151,7 +151,7 @@ abstract class Client extends SavableComponent implements ClientInterface
         $rules[] = [['id'], 'number', 'integerOnly' => true];
 
         $rules[] = [
-            ['name'],
+            ['name', 'handle'],
             UniqueValidator::class,
             'targetClass' => ClientRecord::class,
         ];
