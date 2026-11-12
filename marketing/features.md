@@ -3,7 +3,7 @@ Create HTTP requests in Twig and reusable OAuth or credential clients for third-
 <!-- feature-intro-end -->
 
 <!-- feature-section media-size="large" -->
-## Create clients once, use everywhere
+## Reuse authenticated API clients across templates
 
 Configure an OAuth or credential-based client once in the control panel, then use it wherever your templates need to make an authenticated request. Credentials and connection details stay out of the presentation layer.
 

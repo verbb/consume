@@ -3,8 +3,6 @@
 
 Consume is a Craft CMS plugin that brings authenticated HTTP requests into Craft templates without scattering credentials and connection details through your Twig. Configure reusable clients once, fetch remote data when you need it, and turn common response formats into workable arrays.
 
-Fetching a little external data should not mean rebuilding authentication in every template. Configure a client once, then make the request from Twig while credentials and connection details stay out of the presentation layer.
-
 ## Features
 
 - Connect to established providers without rebuilding the authorisation flow.
@@ -14,25 +12,26 @@ Fetching a little external data should not mean rebuilding authentication in eve
 - Reuse remote responses and avoid unnecessary calls to upstream services.
 - Register project-specific providers or extend the generic client types.
 
-## Supports
-Consume supports 80+ popular OAuth-based API providers for you to create clients for.
+## Providers
+
+Consume includes OAuth clients for more than 80 API providers.
 
 - Amazon
 - Apple
 - Auth0
-- Aweber
+- AWeber
 - Azure
 - Basecamp
 - Bitbucket
 - Box
 - Buddy
 - Buffer
-- ConstantContact
+- Constant Contact
 - Deezer
 - DeviantArt
 - Discord
 - Disqus
-- Docusign
+- DocuSign
 - Dribbble
 - Drip
 - Dropbox
@@ -56,11 +55,11 @@ Consume supports 80+ popular OAuth-based API providers for you to create clients
 - Infusionsoft
 - Instagram
 - Jira
-- Line
+- LINE
 - LinkedIn
 - Linode
 - Mailchimp
-- Mailru
+- Mail.ru
 - Marketo
 - Mastodon
 - Meetup
@@ -78,10 +77,10 @@ Consume supports 80+ popular OAuth-based API providers for you to create clients
 - SoundCloud
 - Spotify
 - Square
-- StackExchange
+- Stack Exchange
 - Strava
 - Stripe
-- Sugarcrm
+- SugarCRM
 - TikTok
 - Trello
 - Trustpilot
@@ -92,7 +91,7 @@ Consume supports 80+ popular OAuth-based API providers for you to create clients
 - Unsplash
 - Vend
 - Vimeo
-- Vkontakte
+- VKontakte
 - WeChat
 - Weibo
 - Yahoo
@@ -103,10 +102,12 @@ Consume supports 80+ popular OAuth-based API providers for you to create clients
 We also provide a "Generic" OAuth client in case your provider isn't in the list above.
 
 ## Documentation
+
 Visit the [Consume Plugin page](https://verbb.io/craft-plugins/consume) for all documentation, guides, pricing and developer resources.
 
 ## Support
-Get in touch with us via the [Consume Support page](https://verbb.io/craft-plugins/consume/support) or by [creating a Github issue](https://github.com/verbb/consume/issues)
+
+Get in touch with us via the [Consume Support page](https://verbb.io/craft-plugins/consume/support) or by [creating a GitHub issue](https://github.com/verbb/consume/issues).
 
 <h2></h2>
 
