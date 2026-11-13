@@ -1,5 +1,5 @@
 # Client
-Whenever you're dealing with an client in your template, you're actually working with a `Client` object.
+Whenever you're dealing with a client in your template, you're actually working with a `Client` object.
 
 <span id="attributes"></span>
 
@@ -68,7 +68,9 @@ The name of the client provider connected.
 ::: reference
 ### `isConfigured()`
 
-Whether the client provider has been configured.
+**Returns:** `bool`
+
+Returns whether the client has the settings it needs to make requests, such as a URL for a Generic credentials client, or a client ID and secret for an OAuth client.
 :::
 
 ::: reference
@@ -76,11 +78,13 @@ Whether the client provider has been configured.
 
 **Returns:** `bool`
 
-Whether the client provider has been connected and has a token. (OAuth clients only).
+Returns whether the client has a stored access token. This is always `false` for credentials clients.
 :::
 
 ::: reference
 ### `getToken()`
 
-The access token for a client provider. (OAuth clients only).
+**Returns:** `verbb\auth\models\Token|null`
+
+Returns the stored access token for an OAuth client, or `null` when the client isn’t connected.
 :::

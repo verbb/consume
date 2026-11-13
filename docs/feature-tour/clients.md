@@ -6,7 +6,7 @@ You can create either a **Credentials** or **OAuth** client in Consume, via the 
 :::tip
 You don't have to use clients if you just want to roll your own [Guzzle](https://docs.guzzlephp.org/en/stable/) client. Have a look at the [Requests](docs:template-guides/fetching-data) docs. 
 
-An on-demand client created entirely in Twig cannot perform OAuth setup. Create and connect an OAuth client in the control panel before using it from a template. For a custom provider implementation, see [Client Types](docs:developers/client-type).
+An on-demand client created entirely in Twig cannot perform OAuth setup. Create and connect an OAuth client in the control panel before using it from a template. For a custom provider implementation, see [Custom Client Types](docs:developers/custom-client-types).
 :::
 
 ## Credentials Client

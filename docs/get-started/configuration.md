@@ -58,7 +58,7 @@ Optionally override the OAuth redirect URI for detached or multi-domain setups. 
 
 
 ### Redirect URI Override
-By default, Consume will continue to use its legacy callback URI. If you need to use a different callback URI, such as for detached domains or an `/actions/...` callback, set `redirectUri` at the plugin level.
+By default, Consume builds its callback URI from the `consume/auth/callback` route. If you need a different callback URI, such as for detached domains or an `/actions/...` callback, set `redirectUri` at the plugin level.
 
 ```php
 'redirectUri' => 'https://craft.example.com/actions/consume/auth/callback',
