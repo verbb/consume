@@ -10,9 +10,17 @@
 {% set title = 'Clients' | t('consume') %}
 {% set selectedSubnavItem = 'clients' %}
 
-{% block actionButton %}
+{# Nothing to list yet: the page is one empty state on the page background, without the table or the footer. #}
+{% set firstRun = clients is empty %}
 
-<div class="btngroup submit">
+{% if firstRun %}
+    {% set bareContent = true %}
+    {% set hidePluginFooter = true %}
+{% endif %}
+
+{# The page's create action, a menu of the two client kinds. The first-run panel holds it while there are no clients. #}
+{% macro newClientButton(slot) %}
+<div class="btngroup submit"{% if slot %} slot="{{ slot }}"{% endif %}>
     <button type="button" class="btn submit add icon menubtn">
         <div class="label">{{ 'New client' | t('consume') }}</div>
     </button>
@@ -29,14 +37,34 @@
         </ul>
     </div>
 </div>
+{% endmacro %}
+
+{% block actionButton %}
+
+{# The first-run panel holds the create button, so the header doesn't show it as well. #}
+{% if not firstRun %}
+    {{ _self.newClientButton() }}
+{% endif %}
 
 {% endblock %}
 
 {% block blockContent %}
 
-<div id="clients-vue-admin-table"></div>
+{% if firstRun %}
+    {% do view.registerAssetBundle('verbb\\consume\\web\\assets\\cp\\PluginKitAsset') %}
+
+    <pk-state-panel layout="page" heading="{{ 'Add your first client' | t('consume') }}" heading-level="2">
+        {% include 'consume/_includes/spots/clients' %}
+        {{ 'Connect a provider with OAuth, or use an API key or other credentials for any other API, then fetch its data in your templates.' | t('consume') }}
+        {{ _self.newClientButton('actions') }}
+    </pk-state-panel>
+{% else %}
+    <div id="clients-vue-admin-table"></div>
+{% endif %}
 
 {% endblock %}
+
+{% if not firstRun %}
 
 {% set tableData = [] %}
 
@@ -101,3 +129,4 @@
         tableData: {{ tableData | json_encode | raw }},
     });
 {% endjs %}
+{% endif %}

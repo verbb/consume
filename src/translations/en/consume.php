@@ -3,6 +3,7 @@
 return [
   'Account' => 'Account',
   'Add an option' => 'Add an option',
+  'Add your first client' => 'Add your first client',
   'API error: “{message}” {file}:{line}' => 'API error: “{message}” {file}:{line}',
   'API URL' => 'API URL',
   'Are you sure you want to delete this client?' => 'Are you sure you want to delete this client?',
@@ -20,6 +21,7 @@ return [
   'CN' => 'CN',
   'Company Name' => 'Company Name',
   'Connect' => 'Connect',
+  'Connect a provider with OAuth, or use an API key or other credentials for any other API, then fetch its data in your templates.' => 'Connect a provider with OAuth, or use an API key or other credentials for any other API, then fetch its data in your templates.',
   'Connected' => 'Connected',
   'Consume' => 'Consume',
   'Couldn’t save client.' => 'Couldn’t save client.',

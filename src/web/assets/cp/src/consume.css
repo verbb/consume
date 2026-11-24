@@ -53,3 +53,48 @@
     background: #fcf3f3;
     border: 1px solid #e2cbcb;
 }
+
+/* A page with nothing to show yet: Plugin Kit's page empty state, straight on the page background. */
+.consume-bare-content #content.content-pane {
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.consume-bare-content #content > pk-state-panel[layout='page'] {
+    flex: 1 1 auto;
+}
+
+/* Consume's spot illustrations in those states: a duotone in Consume's brand colour (#c04444, from icon.svg), a darker
+   line on white with soft tinted fills and the arrow in the brand colour itself. */
+.consume-spot {
+    --consume-spot-line: #9b3434;
+    --consume-spot-tint: #fbe9e9;
+    --consume-spot-accent: #c04444;
+    overflow: visible;
+}
+
+.consume-spot :is(.consume-spot__paper, .consume-spot__fill, .consume-spot__line, .consume-spot__accent) {
+    stroke: var(--consume-spot-line);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.consume-spot .consume-spot__paper {
+    fill: var(--white, #fff);
+}
+
+.consume-spot .consume-spot__fill {
+    fill: var(--consume-spot-tint);
+}
+
+.consume-spot .consume-spot__line {
+    fill: none;
+}
+
+.consume-spot .consume-spot__accent {
+    fill: none;
+    stroke: var(--consume-spot-accent);
+    stroke-width: 2.5;
+}

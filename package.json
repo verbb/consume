@@ -7,5 +7,8 @@
     "devDependencies": {
         "esbuild": "^0.28.2",
         "vite": "^8.3.5"
+    },
+    "dependencies": {
+        "@verbb/plugin-kit-web": "file:../../../plugin-kit/plugin-kit/plugin-kit-web"
     }
 }

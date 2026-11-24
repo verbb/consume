@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Added a getting-started screen to the Clients page when no clients exist, with a button to create a credentials or OAuth client.
+
 ## 2.0.24 - 2026-11-01
 
 ### Fixed
